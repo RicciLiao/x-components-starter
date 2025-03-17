@@ -48,14 +48,4 @@ public class DynamicAspectAutoConfiguration extends PropsBeanDefinitionRegistryP
         return true;
     }
 
-    /*static class ConfigurationCondition implements Condition {
-
-        @Override
-        public boolean matches(@NonNull ConditionContext context, @NonNull AnnotatedTypeMetadata metadata) {
-
-            return Objects.nonNull(context.getEnvironment().getProperty("ricciliao.x.dynamic-aspect.aspect-list[0].expression"));
-        }
-
-    }*/
-
 }
