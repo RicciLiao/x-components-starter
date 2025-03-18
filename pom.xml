@@ -29,6 +29,15 @@
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
+            <groupId>ricciliao.x</groupId>
+            <artifactId>common-components</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ricciliao.x</groupId>
+            <artifactId>dynamic-aop-component</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <scope>provided</scope>
@@ -38,14 +47,10 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
-            <groupId>ricciliao.x</groupId>
-            <artifactId>common-components</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ricciliao.x</groupId>
-            <artifactId>dynamic-aop-component</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
