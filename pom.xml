@@ -13,7 +13,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>x-components-starter</name>
-    <description>Starter for some components</description>
+    <description>Starter for X components</description>
 
     <properties>
 
@@ -35,6 +35,10 @@
         <dependency>
             <groupId>ricciliao.x</groupId>
             <artifactId>dynamic-aop-component</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ricciliao.x</groupId>
+            <artifactId>cache-consumer-xstarter</artifactId>
         </dependency>
 
         <dependency>

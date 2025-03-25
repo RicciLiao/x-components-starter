@@ -8,9 +8,9 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
-import ricciliao.x.component.cache.consumer.ConsumerCacheProperties;
-import ricciliao.x.component.cache.consumer.ConsumerCacheRestService;
-import ricciliao.x.component.cache.pojo.ConsumerIdentifierDto;
+import ricciliao.x.cache.ConsumerCacheProperties;
+import ricciliao.x.cache.ConsumerCacheRestService;
+import ricciliao.x.cache.pojo.ConsumerIdentifierDto;
 import ricciliao.x.component.context.PropsBeanDefinitionRegistryPostProcessor;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
