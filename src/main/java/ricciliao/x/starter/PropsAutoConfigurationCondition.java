@@ -1,18 +1,18 @@
 package ricciliao.x.starter;
 
+import jakarta.annotation.Nonnull;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.lang.NonNull;
 
 import java.util.Map;
 
 public class PropsAutoConfigurationCondition implements Condition {
 
     @Override
-    public boolean matches(@NonNull ConditionContext context, @NonNull AnnotatedTypeMetadata metadata) {
+    public boolean matches(@Nonnull ConditionContext context, @Nonnull AnnotatedTypeMetadata metadata) {
         Map<String, Object> attributes = metadata.getAnnotationAttributes(PropsAutoConfiguration.class.getName());
         if (MapUtils.isEmpty(attributes)) {
 

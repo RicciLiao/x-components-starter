@@ -1,12 +1,10 @@
 package ricciliao.x.starter.cache;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springframework.lang.NonNull;
 import org.springframework.web.client.RestTemplate;
 import ricciliao.x.cache.ConsumerCacheProperties;
 import ricciliao.x.cache.ConsumerCacheRestService;
@@ -25,7 +23,7 @@ public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryP
     }
 
     @Override
-    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
+    public void postProcessBeanDefinitionRegistry(@Nonnull BeanDefinitionRegistry registry) throws BeansException {
         RestTemplate restTemplate = new RestTemplate();
         for (ConsumerCacheProperties.OperationProperties operation : this.getProps().getOperationList()) {
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
@@ -38,20 +36,6 @@ public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryP
             beanDefinition.setConstructorArgumentValues(values);
             registry.registerBeanDefinition(operation.getStore() + ConsumerCacheRestService.class.getSimpleName(), beanDefinition);
         }
-    }
-
-    @Override
-    public void postProcessBeanFactory(@NonNull ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        beanFactory.addBeanPostProcessor(new BeanPostProcessor() {
-            @Override
-            public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
-                if (bean instanceof RestTemplate restTemplate) {
-                    System.out.println("I Am RestTemplate......");
-                }
-
-                return bean;
-            }
-        });
     }
 
 }

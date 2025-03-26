@@ -1,10 +1,10 @@
 package ricciliao.x.starter.aop;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.lang.NonNull;
 import ricciliao.x.component.context.PropsBeanDefinitionRegistryPostProcessor;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
@@ -19,7 +19,7 @@ public class DynamicAspectAutoConfiguration extends PropsBeanDefinitionRegistryP
     }
 
     @Override
-    public void postProcessBeanDefinitionRegistry(@NonNull BeanDefinitionRegistry registry) throws BeansException {
+    public void postProcessBeanDefinitionRegistry(@Nonnull BeanDefinitionRegistry registry) throws BeansException {
         for (DynamicAspectAutoProperties.ExpressionAspect aspect : this.getProps().getAspectList()) {
             if (isBlank(aspect.getBeanName())) {
 
