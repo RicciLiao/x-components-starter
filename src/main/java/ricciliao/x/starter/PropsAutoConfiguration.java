@@ -38,6 +38,6 @@ public @interface PropsAutoConfiguration {
     @AliasFor(annotation = EnableConfigurationProperties.class, attribute = "value")
     Class<? extends ApplicationProperties>[] properties();
 
-    String[] conditionProperties() default {};
+    String[] conditionalOnProperties() default {};
 
 }

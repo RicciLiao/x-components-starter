@@ -10,7 +10,7 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 
 @PropsAutoConfiguration(
         properties = DynamicAspectAutoProperties.class,
-        conditionProperties = "ricciliao.x.dynamic-aspect.aspect-list[0].expression"
+        conditionalOnProperties = "ricciliao.x.dynamic-aspect.aspect-list[0].expression"
 )
 public class DynamicAspectAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<DynamicAspectAutoProperties> {
 

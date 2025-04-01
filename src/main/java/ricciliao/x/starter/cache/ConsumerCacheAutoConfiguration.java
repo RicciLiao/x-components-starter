@@ -14,7 +14,7 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 
 @PropsAutoConfiguration(
         properties = ConsumerCacheAutoProperties.class,
-        conditionProperties = "ricciliao.x.cache-consumer.consumer"
+        conditionalOnProperties = "ricciliao.x.cache-consumer.consumer"
 )
 public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<ConsumerCacheAutoProperties> {
 

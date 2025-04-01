@@ -5,7 +5,6 @@ import ricciliao.x.starter.cache.ConsumerCacheAutoProperties;
 import ricciliao.x.starter.common.CommonAutoProperties;
 
 public record XProperties(CommonAutoProperties commonProps,
-                          DynamicAspectAutoProperties dynamicAspectProps,
-                          ConsumerCacheAutoProperties consumerProperties) {
+                          DynamicAspectAutoProperties dynamicAspectProps) {
 
 }

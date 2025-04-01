@@ -34,7 +34,8 @@
         </dependency>
         <dependency>
             <groupId>ricciliao.x</groupId>
-            <artifactId>cache-consumer-xstarter</artifactId>
+            <artifactId>cache-consumer-common</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -59,6 +60,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-dependencies.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
