@@ -167,12 +167,12 @@ public class ConsumerCacheProperties {
 
 ##### ConsumerCacheProperties.java
 
-* `consumer`: define the identity code of service which will use this provider,
+* `consumer`: define the identity code of service which use **Cache Provider**,
   it must same code as **Cache Provider**.
 
 ##### OperationProperties .java
 
-* `store`: define the identity code of data which from the consumer,
+* `store`: define the identity code of consumer data,
   it must same code as **Cache Provider**.
 * `storeClassName`: your data POJO class,
   it must extends `CacheDto.class` and same class as **Cache Provider**.
