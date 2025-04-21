@@ -18,9 +18,10 @@ Please refer to `dependencies-control-center` for the version number.
 
 ### 📌 Usage
 
-The **Starter** base on spring starter design and contains a series of x-component starter,
-you just need to config components properties in your `application.yml`,
-it makes easier to use it.
+The **Starter** base on spring starter design and integrates a series of x-components,
+you just need to config the components properties in your `application.yml`,
+then the starter will auto define components by your properties,
+it makes easier to use components to you.
 
 #### Components
 
@@ -75,7 +76,7 @@ public class DynamicAspectAutoProperties {
 
 *Please refer to `x-cache-component`*
 
-It is just for the consumer which use **Cache Provider** as data store.
+***It is just for the consumer which use **Cache Provider** as data store.***
 
 ```yaml
 ricciliao:
