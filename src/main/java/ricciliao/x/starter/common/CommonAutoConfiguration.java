@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import ricciliao.x.component.utils.SpringBeanUtils;
@@ -14,8 +15,13 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 @PropsAutoConfiguration(properties = CommonAutoProperties.class)
 public class CommonAutoConfiguration {
 
-    public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext) {
+    public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
+                                   @Autowired CommonAutoProperties props,
+                                   @Value("${spring.application.version}") String version,
+                                   @Value("${spring.application.name}") String name) {
         SpringBeanUtils.setApplicationContext(applicationContext);
+        props.setVersion(version);
+        props.setConsumer(name);
     }
 
     @Bean
