@@ -1,3 +1,4 @@
+ricciliao.x.starter.log.AuditLogAutoConfiguration
 ricciliao.x.starter.common.CommonAutoConfiguration
 ricciliao.x.starter.aop.DynamicAspectAutoConfiguration
 ricciliao.x.starter.cache.ConsumerCacheAutoConfiguration

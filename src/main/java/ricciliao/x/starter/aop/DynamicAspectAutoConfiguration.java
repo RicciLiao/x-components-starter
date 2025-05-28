@@ -1,6 +1,7 @@
 package ricciliao.x.starter.aop;
 
 import jakarta.annotation.Nonnull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -21,7 +22,7 @@ public class DynamicAspectAutoConfiguration extends PropsBeanDefinitionRegistryP
     @Override
     public void postProcessBeanDefinitionRegistry(@Nonnull BeanDefinitionRegistry registry) throws BeansException {
         for (DynamicAspectAutoProperties.ExpressionAspect aspect : this.getProps().getAspectList()) {
-            if (isBlank(aspect.getBeanName())) {
+            if (StringUtils.isBlank(aspect.getBeanName())) {
 
                 throw new BeanCreationException("can not define Dynamic Aspect without bean name!");
             }
@@ -32,20 +33,6 @@ public class DynamicAspectAutoConfiguration extends PropsBeanDefinitionRegistryP
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(aspect.getAspect());
             registry.registerBeanDefinition(aspect.getBeanName(), builder.getBeanDefinition());
         }
-    }
-
-    private static boolean isBlank(CharSequence cs) {
-        int strLen = cs == null ? 0 : cs.length();
-        if (strLen != 0) {
-            for (int i = 0; i < strLen; ++i) {
-                if (!Character.isWhitespace(cs.charAt(i))) {
-
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
 }
