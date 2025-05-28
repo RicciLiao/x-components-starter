@@ -37,13 +37,15 @@ public class AuditLogAutoConfiguration extends PropsBeanDefinitionRegistryPostPr
         auditLogFilterBean.setName("auditLogFilter");
         beanFactory.registerSingleton("auditLogFilter", auditLogFilterBean);
 
-        ThreadPoolTaskExecutor mdcSupportExecutor = new ThreadPoolTaskExecutor();
-        mdcSupportExecutor.setCorePoolSize(this.getProps().getExecutor().getCorePoolSize());
-        mdcSupportExecutor.setMaxPoolSize(this.getProps().getExecutor().getMaxPoolSize());
-        mdcSupportExecutor.setQueueCapacity(this.getProps().getExecutor().getQueueCapacity());
-        mdcSupportExecutor.setThreadNamePrefix(this.getProps().getExecutor().getThreadNamePrefix());
-        mdcSupportExecutor.setTaskDecorator(new MdcSupportTaskDecorator());
-        mdcSupportExecutor.initialize();
-        beanFactory.registerSingleton("mdcSupportExecutor", mdcSupportExecutor);
+        if (Boolean.TRUE.equals(this.getProps().getExecutor().getEnable())) {
+            ThreadPoolTaskExecutor mdcSupportExecutor = new ThreadPoolTaskExecutor();
+            mdcSupportExecutor.setCorePoolSize(this.getProps().getExecutor().getCorePoolSize());
+            mdcSupportExecutor.setMaxPoolSize(this.getProps().getExecutor().getMaxPoolSize());
+            mdcSupportExecutor.setQueueCapacity(this.getProps().getExecutor().getQueueCapacity());
+            mdcSupportExecutor.setThreadNamePrefix(this.getProps().getExecutor().getThreadNamePrefix());
+            mdcSupportExecutor.setTaskDecorator(new MdcSupportTaskDecorator());
+            mdcSupportExecutor.initialize();
+            beanFactory.registerSingleton("mdcSupportExecutor", mdcSupportExecutor);
+        }
     }
 }
