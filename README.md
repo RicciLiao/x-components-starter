@@ -10,11 +10,13 @@ Please refer to `dependencies-control-center` for the version number.
 |--------------------------------|---------------------------|----------|
 | org.springframework.boot       | spring-boot-autoconfigure | compile  |
 | ricciliao.x                    | common-components         | compile  |
+| ricciliao.x                    | audit-log-component       | compile  |
 | org.springframework            | spring-context            | provided |
 | ricciliao.x                    | cache-consumer-common     | provided |
 | com.fasterxml.jackson.core     | jackson-databind          | provided |
 | com.fasterxml.jackson.datatype | jackson-datatype-jsr310   | provided |
 | org.springframework            | spring-web                | provided |
+| jakarta.servlet                | jakarta.servlet-api       | provided |
 
 ### 📌 Usage
 
