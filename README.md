@@ -233,4 +233,43 @@ public class CommonProperties {
 
 ---
 
+#### 🚩 audit-log-component
+
+*please refer to `x-audit-log-component`*
+
+```yaml
+ricciliao:
+  x:
+    log:
+      executor:
+        enable:
+        corePoolSize:
+        maxPoolSize:
+        keepAliveSeconds:
+        queueCapacity:
+        threadNamePrefix:
+      
+```
+
+```java
+public class AuditLogAutoProperties extends ApplicationProperties {
+    private Executor executor;
+
+    //getter
+    //setter
+    public static class Executor {
+        private Boolean enable = Boolean.FALSE;
+        private Integer corePoolSize = 1;
+        private Integer maxPoolSize = Integer.MAX_VALUE;
+        private Integer keepAliveSeconds = 60;
+        private Integer queueCapacity = Integer.MAX_VALUE;
+        private String threadNamePrefix = "MDC Executor - ";
+        //getter
+        //setter
+    }
+}
+```
+
+---
+
 🤖 Best wishes and enjoy it ~~
