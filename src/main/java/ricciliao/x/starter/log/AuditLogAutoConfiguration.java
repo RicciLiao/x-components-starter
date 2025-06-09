@@ -5,17 +5,15 @@ import jakarta.annotation.Nonnull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.core.Ordered;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import ricciliao.x.component.context.PropsBeanDefinitionRegistryPostProcessor;
-import ricciliao.x.log.MdcSupportFilter;
 import ricciliao.x.log.MdcSupportTaskDecorator;
+import ricciliao.x.starter.PropsAutoConfiguration;
 
-@AutoConfiguration
+@PropsAutoConfiguration(
+        properties = AuditLogAutoProperties.class
+)
 public class AuditLogAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<AuditLogAutoProperties> {
-
 
     protected AuditLogAutoConfiguration() {
         super(AuditLogAutoProperties.class);
@@ -29,13 +27,6 @@ public class AuditLogAutoConfiguration extends PropsBeanDefinitionRegistryPostPr
     @Override
     public void postProcessBeanFactory(@Nonnull ConfigurableListableBeanFactory beanFactory) throws BeansException {
         super.postProcessBeanFactory(beanFactory);
-
-        FilterRegistrationBean<MdcSupportFilter> auditLogFilterBean = new FilterRegistrationBean<>();
-        auditLogFilterBean.setFilter(new MdcSupportFilter());
-        auditLogFilterBean.addUrlPatterns("/*");
-        auditLogFilterBean.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
-        auditLogFilterBean.setName("auditLogFilter");
-        beanFactory.registerSingleton("auditLogFilter", auditLogFilterBean);
 
         if (Boolean.TRUE.equals(this.getProps().getExecutor().getEnable())) {
             ThreadPoolTaskExecutor mdcSupportExecutor = new ThreadPoolTaskExecutor();
