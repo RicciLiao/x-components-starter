@@ -7,12 +7,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ricciliao.x.component.utils.SpringBeanUtils;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
-@PropsAutoConfiguration(properties = CommonAutoProperties.class)
+@PropsAutoConfiguration(
+        properties = CommonAutoProperties.class,
+        before = JacksonAutoConfiguration.class
+)
 public class CommonAutoConfiguration {
 
     public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
