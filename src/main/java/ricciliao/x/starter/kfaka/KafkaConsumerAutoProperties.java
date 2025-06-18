@@ -2,12 +2,13 @@ package ricciliao.x.starter.kfaka;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import ricciliao.x.component.kafka.KafkaHandler;
+import ricciliao.x.component.kafka.KafkaMessageDto;
 import ricciliao.x.component.props.ApplicationProperties;
 
 import java.util.List;
 import java.util.Objects;
 
-@ConfigurationProperties("ricciliao.x.kafka")
+@ConfigurationProperties("ricciliao.x.kafka.a")
 public class KafkaConsumerAutoProperties extends ApplicationProperties {
 
     private List<Consumer> consumerList;
@@ -35,8 +36,9 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
     public static class Consumer {
         private String topic;
         private String group;
-        private Class<? extends KafkaHandler> handler;
+        private Class<KafkaHandler<KafkaMessageDto>> handler;
         private String beanName;
+        private Class<KafkaMessageDto> messageClass;
 
         public String getTopic() {
             return topic;
@@ -54,11 +56,11 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
             this.group = group;
         }
 
-        public Class<? extends KafkaHandler> getHandler() {
+        public Class<KafkaHandler<KafkaMessageDto>> getHandler() {
             return handler;
         }
 
-        public void setHandler(Class<? extends KafkaHandler> handler) {
+        public void setHandler(Class<KafkaHandler<KafkaMessageDto>> handler) {
             this.handler = handler;
         }
 
@@ -70,16 +72,12 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
             this.beanName = beanName;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Consumer consumer)) return false;
-            return Objects.equals(getTopic(), consumer.getTopic()) && Objects.equals(getGroup(), consumer.getGroup()) && Objects.equals(getHandler(), consumer.getHandler()) && Objects.equals(getBeanName(), consumer.getBeanName());
+        public Class<KafkaMessageDto> getMessageClass() {
+            return messageClass;
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(getTopic(), getGroup(), getHandler(), getBeanName());
+        public void setMessageClass(Class<KafkaMessageDto> messageClass) {
+            this.messageClass = messageClass;
         }
     }
 
