@@ -10,29 +10,29 @@ import java.util.Objects;
 @ConfigurationProperties("ricciliao.x.kafka.b")
 public class KafkaProducerAutoProperties extends ApplicationProperties {
 
-    private List<Provider> providerList;
+    private List<Producer> producerList;
 
-    public List<Provider> getProviderList() {
-        return providerList;
+    public List<Producer> getProducerList() {
+        return producerList;
     }
 
-    public void setProviderList(List<Provider> providerList) {
-        this.providerList = providerList;
+    public void setProducerList(List<Producer> producerList) {
+        this.producerList = producerList;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof KafkaProducerAutoProperties that)) return false;
-        return Objects.equals(getProviderList(), that.getProviderList());
+        return Objects.equals(getProducerList(), that.getProducerList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getProviderList());
+        return Objects.hash(getProducerList());
     }
 
-    public static class Provider {
+    public static class Producer {
         private String topic;
         private Class<KafkaMessageDto> messageClass;
         private String beanName;
@@ -64,7 +64,7 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Provider provider)) return false;
+            if (!(o instanceof Producer provider)) return false;
             return Objects.equals(getTopic(), provider.getTopic()) && Objects.equals(getMessageClass(), provider.getMessageClass()) && Objects.equals(getBeanName(), provider.getBeanName());
         }
 

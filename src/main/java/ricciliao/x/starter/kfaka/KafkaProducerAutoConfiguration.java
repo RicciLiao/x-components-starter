@@ -10,7 +10,7 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 
 @PropsAutoConfiguration(
         properties = KafkaProducerAutoProperties.class,
-        conditionalOnProperties = "ricciliao.x.kafka.b.provider-list[0].topic",
+        conditionalOnProperties = "ricciliao.x.kafka.b.producer-list[0].topic",
         after = KafkaAutoConfiguration.class
 )
 public class KafkaProducerAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<KafkaProducerAutoProperties> {
@@ -22,7 +22,7 @@ public class KafkaProducerAutoConfiguration extends PropsBeanDefinitionRegistryP
 
     @Override
     public void postProcessBeanDefinitionRegistry(@Nonnull BeanDefinitionRegistry registry) throws BeansException {
-        for (KafkaProducerAutoProperties.Provider provider : this.getProps().getProviderList()) {
+        for (KafkaProducerAutoProperties.Producer provider : this.getProps().getProducerList()) {
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
             beanDefinition.setBeanClass(KafkaProducerFactoryBean.class);
             beanDefinition.getConstructorArgumentValues().addGenericArgumentValue(provider.getTopic());
