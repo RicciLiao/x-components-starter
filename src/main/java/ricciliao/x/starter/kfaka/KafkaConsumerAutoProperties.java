@@ -38,7 +38,6 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
         private String group;
         private Class<KafkaHandler<KafkaMessageDto>> handler;
         private String beanName;
-        private Class<KafkaMessageDto> messageClass;
 
         public String getTopic() {
             return topic;
@@ -72,13 +71,6 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
             this.beanName = beanName;
         }
 
-        public Class<KafkaMessageDto> getMessageClass() {
-            return messageClass;
-        }
-
-        public void setMessageClass(Class<KafkaMessageDto> messageClass) {
-            this.messageClass = messageClass;
-        }
     }
 
 }

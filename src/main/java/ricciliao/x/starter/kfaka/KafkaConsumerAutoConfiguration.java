@@ -14,6 +14,8 @@ import ricciliao.x.component.kafka.KafkaHandler;
 import ricciliao.x.component.kafka.KafkaMessageDto;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class KafkaConsumerAutoConfiguration {
         for (KafkaConsumerAutoProperties.Consumer consumer : props.getConsumerList()) {
             Map<String, Object> configProps = new HashMap<>(consumerFactory.getConfigurationProperties());
             configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-            configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, consumer.getMessageClass());
+            configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, this.getMessageClass(consumer.getHandler()));
             ConsumerFactory<String, KafkaMessageDto> cfy =
                     new DefaultKafkaConsumerFactory<>(
                             configProps,
@@ -41,7 +43,7 @@ public class KafkaConsumerAutoConfiguration {
             KafkaHandler<KafkaMessageDto> kafkaHandler = beanFactory.createBean(consumer.getHandler());  //inorder to enable dependency injection
             beanFactory.registerSingleton(
                     consumer.getBeanName(),
-                    new KafkaConsumer<>(cfy, consumer.getMessageClass()) {
+                    new KafkaConsumer<>(cfy) {
                         @Override
                         public String getTopic() {
                             return consumer.getTopic();
@@ -59,6 +61,26 @@ public class KafkaConsumerAutoConfiguration {
                     }
             );
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Class<? extends KafkaMessageDto> getMessageClass(Class<KafkaHandler<KafkaMessageDto>> handlerClass) {
+        Type[] types = handlerClass.getGenericInterfaces();
+        if (types[0] instanceof ParameterizedType pt) {
+            if (pt.getRawType() instanceof Class<?> clazz
+                    && KafkaHandler.class.isAssignableFrom(clazz)) {
+                Type[] actualTypes = pt.getActualTypeArguments();
+                if (actualTypes[0] instanceof Class<?> mClazz
+                        && KafkaMessageDto.class.isAssignableFrom(mClazz)) {
+
+                    return (Class<? extends KafkaMessageDto>) mClazz;
+                }
+            }
+        }
+
+        throw new BeanCreationException(
+                String.format("Cannot resolve %s parameterized type!", handlerClass)
+        );
     }
 
 }
