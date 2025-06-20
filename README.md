@@ -207,6 +207,8 @@ public class ConsumerCacheProperties {
 
 *please refer to `x-common-components`*
 
+- **Common**
+
 ```yaml
 ricciliao:
   x:
@@ -233,6 +235,96 @@ public class CommonProperties {
 
 ---
 
+- **Kafka**
+
+    - Consumer
+
+```yaml
+ricciliao:
+  x:
+    kafka:
+      a:
+        consumer-list:
+          - topic:
+            group:
+            handler:
+            bean-name:
+            message-class: 
+```
+
+```java
+public class KafkaConsumerAutoProperties extends ApplicationProperties {
+
+    private List<Consumer> consumerList;
+
+    //getter
+    //setter
+    public static class Consumer {
+        private String topic;
+        private String group;
+        private Class<KafkaHandler<KafkaMessageDto>> handler;
+        private String beanName;
+        private Class<KafkaMessageDto> messageClass;
+        //getter
+        //setter
+    }
+}
+```
+
+##### KafkaConsumerAutoProperties.class
+
+* `consumerList`: your kafka consumer list.
+
+##### Consumer.class
+
+* `topic`: your kafka consumer topic.
+* `group`: your kafka consumer group.
+* `handler`: your kafka consumer message handler class, it should be implemented with `KafkaHandler.class`.
+* `beanName`: your kafka consumer message handler bean name.
+* `messageClass`: your kafka consumer message POJO class, it should be implemented with `KafkaMessageDto.class`.
+
+    - Producer
+
+```yaml
+ricciliao:
+  x:
+    kafka:
+      b:
+        provider-list:
+          - topic:
+            message-class:
+            bean-name: 
+```
+
+```java
+public class KafkaProducerAutoProperties extends ApplicationProperties {
+
+    private List<Producer> producerList;
+
+    //getter
+    //setter
+    public static class Producer {
+        private String topic;
+        private Class<KafkaMessageDto> messageClass;
+        private String beanName;
+        //getter
+        //setter
+    }
+}
+```
+
+##### KafkaProducerAutoProperties.class
+
+* `producerList`: your kafka producer list.
+
+##### Producer.class
+
+* `topic`: your kafka producer topic.
+* `beanName`: your kafka consumer message producer bean name.
+* `messageClass`: your kafka producer message POJO class, it should be implemented with `KafkaMessageDto.class`.
+
+---
+
 #### 🚩 audit-log-component
 
 *please refer to `x-audit-log-component`*
@@ -248,7 +340,7 @@ ricciliao:
         keepAliveSeconds:
         queueCapacity:
         threadNamePrefix:
-      
+
 ```
 
 ```java
