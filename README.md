@@ -320,7 +320,7 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
 ##### Producer.class
 
 * `topic`: your kafka producer topic.
-* `beanName`: your kafka consumer message producer bean name.
+* `beanName`: your kafka producer bean name.
 * `messageClass`: your kafka producer message POJO class, it should be implemented with `KafkaMessageDto.class`.
 
 ---
