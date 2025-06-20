@@ -249,7 +249,6 @@ ricciliao:
             group:
             handler:
             bean-name:
-            message-class: 
 ```
 
 ```java
@@ -264,7 +263,6 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
         private String group;
         private Class<KafkaHandler<KafkaMessageDto>> handler;
         private String beanName;
-        private Class<KafkaMessageDto> messageClass;
         //getter
         //setter
     }
@@ -281,7 +279,6 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
 * `group`: your kafka consumer group.
 * `handler`: your kafka consumer message handler class, it should be implemented with `KafkaHandler.class`.
 * `beanName`: your kafka consumer message handler bean name.
-* `messageClass`: your kafka consumer message POJO class, it should be implemented with `KafkaMessageDto.class`.
 
     - Producer
 
