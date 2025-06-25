@@ -8,7 +8,7 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.web.client.RestTemplate;
 import ricciliao.x.cache.ConsumerCacheProperties;
 import ricciliao.x.cache.ConsumerCacheRestService;
-import ricciliao.x.cache.pojo.ConsumerIdentifierDto;
+import ricciliao.x.cache.pojo.ConsumerIdentifier;
 import ricciliao.x.component.context.PropsBeanDefinitionRegistryPostProcessor;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
@@ -30,7 +30,7 @@ public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryP
             beanDefinition.setBeanClass(ConsumerCacheRestService.class);
             ConstructorArgumentValues values = new ConstructorArgumentValues();
             values.addIndexedArgumentValue(0, operation);
-            values.addIndexedArgumentValue(1, new ConsumerIdentifierDto(this.getProps().getConsumer(), operation.getStore()));
+            values.addIndexedArgumentValue(1, new ConsumerIdentifier(this.getProps().getConsumer(), operation.getStore()));
             values.addIndexedArgumentValue(2, restTemplate);
             values.addIndexedArgumentValue(3, operation.getStoreClassName());
             beanDefinition.setConstructorArgumentValues(values);

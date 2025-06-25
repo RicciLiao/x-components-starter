@@ -64,18 +64,15 @@ public class KafkaConsumerAutoConfiguration {
     }
 
     @SuppressWarnings("unchecked")
-    private Class<? extends KafkaMessageDto> getMessageClass(Class<KafkaHandler<KafkaMessageDto>> handlerClass) {
+    private Class<KafkaMessageDto> getMessageClass(Class<KafkaHandler<KafkaMessageDto>> handlerClass) {
         Type[] types = handlerClass.getGenericInterfaces();
-        if (types[0] instanceof ParameterizedType pt) {
-            if (pt.getRawType() instanceof Class<?> clazz
-                    && KafkaHandler.class.isAssignableFrom(clazz)) {
-                Type[] actualTypes = pt.getActualTypeArguments();
-                if (actualTypes[0] instanceof Class<?> mClazz
-                        && KafkaMessageDto.class.isAssignableFrom(mClazz)) {
+        if (types[0] instanceof ParameterizedType pt
+                && pt.getRawType() instanceof Class<?> clazz
+                && KafkaHandler.class.isAssignableFrom(clazz)
+                && pt.getActualTypeArguments()[0] instanceof Class<?> mClazz
+                && KafkaMessageDto.class.isAssignableFrom(mClazz)) {
 
-                    return (Class<? extends KafkaMessageDto>) mClazz;
-                }
-            }
+            return (Class<KafkaMessageDto>) mClazz;
         }
 
         throw new BeanCreationException(

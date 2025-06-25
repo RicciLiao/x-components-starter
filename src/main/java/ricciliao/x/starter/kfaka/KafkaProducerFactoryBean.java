@@ -1,6 +1,7 @@
 package ricciliao.x.starter.kfaka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Nonnull;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -9,7 +10,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import org.springframework.lang.NonNull;
 import ricciliao.x.component.kafka.KafkaMessageDto;
 import ricciliao.x.component.kafka.KafkaProducer;
 
@@ -26,7 +26,7 @@ public class KafkaProducerFactoryBean<T extends KafkaMessageDto> implements Fact
     }
 
     @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@Nonnull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
