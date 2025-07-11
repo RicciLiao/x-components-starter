@@ -5,16 +5,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springframework.web.client.RestTemplate;
-import ricciliao.x.cache.ConsumerCacheProperties;
-import ricciliao.x.cache.ConsumerCacheRestService;
-import ricciliao.x.cache.pojo.ConsumerIdentifier;
 import ricciliao.x.component.context.PropsBeanDefinitionRegistryPostProcessor;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
 @PropsAutoConfiguration(
         properties = ConsumerCacheAutoProperties.class,
-        conditionalOnProperties = "ricciliao.x.cache-consumer.consumer"
+        conditionalOnProperties = "ricciliao.x.cache-consumer.consumer",
+        after = ConsumerCacheAutoProperties.class
 )
 public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<ConsumerCacheAutoProperties> {
 
@@ -24,15 +21,12 @@ public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryP
 
     @Override
     public void postProcessBeanDefinitionRegistry(@Nonnull BeanDefinitionRegistry registry) throws BeansException {
-        RestTemplate restTemplate = new RestTemplate();
         for (ConsumerCacheProperties.OperationProperties operation : this.getProps().getOperationList()) {
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-            beanDefinition.setBeanClass(ConsumerCacheRestService.class);
+            beanDefinition.setBeanClass(ConsumerCacheRestServiceFactoryBean.class);
             ConstructorArgumentValues values = new ConstructorArgumentValues();
-            values.addIndexedArgumentValue(0, operation);
-            values.addIndexedArgumentValue(1, new ConsumerIdentifier(this.getProps().getConsumer(), operation.getStore()));
-            values.addIndexedArgumentValue(2, restTemplate);
-            values.addIndexedArgumentValue(3, operation.getStoreClassName());
+            values.addIndexedArgumentValue(0, this.getProps().getConsumer());
+            values.addIndexedArgumentValue(1, operation);
             beanDefinition.setConstructorArgumentValues(values);
             registry.registerBeanDefinition(operation.getStore() + ConsumerCacheRestService.class.getSimpleName(), beanDefinition);
         }
