@@ -426,6 +426,8 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
 
 *please refer to `x-audit-log-component`*
 
+📝 Configuration
+
 ```yaml
 ricciliao:
   x:
