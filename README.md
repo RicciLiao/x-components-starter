@@ -30,12 +30,15 @@ it makes easier to use components to you.
 1. `dynamic-aop-component`
 2. `cache-component` *(for consumer)*
 3. `common-component`
+    - kafka
 
-### 📝 Configuration
+---
 
 #### 🚩 dynamic-aop-component
 
 *Please refer to `x-dynamic-aop-component`*
+
+##### 📝 Configuration
 
 ```yaml
 ricciliao:
@@ -51,17 +54,12 @@ ricciliao:
 public class DynamicAspectAutoProperties {
 
     private List<ExpressionAspect> aspectList = new ArrayList<>();
-    //getter
-    //setter
 
     public static class ExpressionAspect {
 
         private String beanName;
         private String expression;
         private Class<? extends DynamicAspect> aspect;
-        //getter
-        //setter
-
     }
 }
 ```
@@ -79,6 +77,8 @@ public class DynamicAspectAutoProperties {
 *Please refer to `x-cache-component`*
 
 ***It is just for the consumer which use **Cache Provider** as data store.***
+
+##### 📝 Configuration
 
 ```yaml
 ricciliao:
@@ -128,8 +128,6 @@ public class ConsumerCacheProperties {
     private String consumer;
     private List<OperationProperties> operationList = new ArrayList();
 
-    //getter
-    //setter
     public static class OperationProperties {
         private String store;
         private Class<CacheDto> storeClassName;
@@ -151,8 +149,6 @@ public class ConsumerCacheProperties {
             this.providerInfo = new CacheRestPathProperties("/operation/extra/providerInfo", HttpMethod.GET);
         }
 
-        //getter
-        //setter
         public static class CacheRestPathProperties extends RestPathProperties {
             public CacheRestPathProperties() {
             }
@@ -161,8 +157,6 @@ public class ConsumerCacheProperties {
                 this.setPath(path);
                 this.setMethod(new RestPathProperties.HttpMethodWrapper(method.name()));
             }
-            //getter
-            //setter
         }
     }
 }
@@ -201,11 +195,121 @@ public class ConsumerCacheProperties {
     * `path`: interface path for retrieving provider information which in **Cache Provider**.
     * `method`: http method for this interface.
 
+##### 📝 Coding
+
+* ##### ConsumerCacheRestService.class
+
+```java
+public class ConsumerCacheRestService<T extends ConsumerCacheData> {
+
+    protected final RestTemplate restTemplate;
+    protected final ConsumerCacheProperties.OperationProperties props;
+    protected final ConsumerIdentifier identifier;
+    protected final Class<T> storeClassName;
+
+    public ConsumerCacheRestService(ConsumerCacheProperties.OperationProperties props,
+                                    ConsumerIdentifier identifier,
+                                    RestTemplate restTemplate,
+                                    Class<T> storeClassName) {
+        this.props = props;
+        this.identifier = identifier;
+        this.restTemplate = restTemplate;
+        this.storeClassName = storeClassName;
+    }
+
+    public ResponseSimpleData.Str create(ConsumerOp.Single<T> operation) throws RestClientException {
+    }
+
+    public ResponseSimpleData.Bool update(ConsumerOp.Single<T> operation) throws RestClientException {
+    }
+
+    public ResponseSimpleData.Bool delete(String id) throws RestClientException {
+    }
+
+    public ConsumerOp.Single<T> get(String id) throws RestClientException {
+    }
+
+    public ResponseSimpleData.Bool batchCreate(ConsumerOp.Batch<T> operation) throws RestClientException {
+    }
+
+    public ResponseSimpleData.Bool batchDelete(CacheBatchQuery query) throws RestClientException {
+    }
+
+    public ConsumerOp.Batch<T> list(CacheBatchQuery query) {
+    }
+
+    public ProviderInfo providerInfo() throws RestClientException {
+    }
+
+}
+```
+
+Cache CURD operation class for consumer.
+
+---
+
+* ##### ConsumerCacheRestServiceFactoryBean.class
+
+```java
+public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
+
+    private final String consumer;
+    private final ConsumerCacheProperties.OperationProperties props;
+
+    private ApplicationContext applicationContext;
+
+    public ConsumerCacheRestServiceFactoryBean(@Nonnull String consumer,
+                                               @Nonnull ConsumerCacheProperties.OperationProperties props) {
+        this.consumer = consumer;
+        this.props = props;
+    }
+
+    @Override
+    public ConsumerCacheRestService<T> getObject() {
+        RestTemplate restTemplate = applicationContext.getBean(RestTemplate.class);
+
+        return new ConsumerCacheRestService<>(
+                props,
+                new ConsumerIdentifier(consumer, props.getStore()),
+                restTemplate,
+                (Class<T>) props.getStoreClassName()
+        );
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+
+        return ConsumerCacheRestService.class;
+    }
+
+    @Override
+    public void setApplicationContext(@Nonnull ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+}
+```
+
+Spring bean registration for **ConsumerCacheRestService**, spring name will be `props.getStore()`
++ConsumerCacheRestService,
+you can inject that with name, like:
+
+```java
+private ConsumerCacheRestService<MessageCodeCacheDto> codeConsumerCacheRestService;
+
+@Qualifier("codeConsumerCacheRestService")
+@Autowired
+public void setCodeConsumerCacheRestService(ConsumerCacheRestService<MessageCodeCacheDto> codeConsumerCacheRestService) {
+    this.codeConsumerCacheRestService = codeConsumerCacheRestService;
+}
+```
+
 ---
 
 #### 🚩 common-component
 
 *please refer to `x-common-components`*
+
+##### 📝 Configuration
 
 - **Common**
 
@@ -224,8 +328,6 @@ public class CommonAutoProperties extends CommonProperties {
 ```java
 public class CommonProperties {
     private TimeZone timeZone;
-    //getter
-    //setter
 }
 ```
 
@@ -237,13 +339,15 @@ public class CommonProperties {
 
 - **Kafka**
 
-    - Consumer
+##### Consumer
+
+##### 📝 Configuration
 
 ```yaml
 ricciliao:
   x:
     kafka:
-      a:
+      consumer:
         consumer-list:
           - topic:
             group:
@@ -256,15 +360,11 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
 
     private List<Consumer> consumerList;
 
-    //getter
-    //setter
     public static class Consumer {
         private String topic;
         private String group;
         private Class<KafkaHandler<KafkaMessageDto>> handler;
         private String beanName;
-        //getter
-        //setter
     }
 }
 ```
@@ -280,13 +380,17 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
 * `handler`: your kafka consumer message handler class, it should be implemented with `KafkaHandler.class`.
 * `beanName`: your kafka consumer message handler bean name.
 
-    - Producer
+---
+
+##### Producer
+
+##### 📝 Configuration
 
 ```yaml
 ricciliao:
   x:
     kafka:
-      b:
+      provider:
         provider-list:
           - topic:
             message-class:
@@ -298,14 +402,10 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
 
     private List<Producer> producerList;
 
-    //getter
-    //setter
     public static class Producer {
         private String topic;
         private Class<KafkaMessageDto> messageClass;
         private String beanName;
-        //getter
-        //setter
     }
 }
 ```
@@ -344,8 +444,6 @@ ricciliao:
 public class AuditLogAutoProperties extends ApplicationProperties {
     private Executor executor;
 
-    //getter
-    //setter
     public static class Executor {
         private Boolean enable = Boolean.FALSE;
         private Integer corePoolSize = 1;
@@ -353,8 +451,6 @@ public class AuditLogAutoProperties extends ApplicationProperties {
         private Integer keepAliveSeconds = 60;
         private Integer queueCapacity = Integer.MAX_VALUE;
         private String threadNamePrefix = "MDC Executor - ";
-        //getter
-        //setter
     }
 }
 ```
