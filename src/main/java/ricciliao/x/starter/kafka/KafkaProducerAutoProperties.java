@@ -1,4 +1,4 @@
-package ricciliao.x.starter.kfaka;
+package ricciliao.x.starter.kafka;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import ricciliao.x.component.kafka.KafkaMessageDto;
@@ -7,7 +7,7 @@ import ricciliao.x.component.props.ApplicationProperties;
 import java.util.List;
 import java.util.Objects;
 
-@ConfigurationProperties("ricciliao.x.kafka.b")
+@ConfigurationProperties("ricciliao.x.kafka.producer")
 public class KafkaProducerAutoProperties extends ApplicationProperties {
 
     private List<Producer> producerList;

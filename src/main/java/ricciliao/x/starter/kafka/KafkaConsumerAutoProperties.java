@@ -1,4 +1,4 @@
-package ricciliao.x.starter.kfaka;
+package ricciliao.x.starter.kafka;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import ricciliao.x.component.kafka.KafkaHandler;
@@ -8,7 +8,7 @@ import ricciliao.x.component.props.ApplicationProperties;
 import java.util.List;
 import java.util.Objects;
 
-@ConfigurationProperties("ricciliao.x.kafka.a")
+@ConfigurationProperties("ricciliao.x.kafka.consumer")
 public class KafkaConsumerAutoProperties extends ApplicationProperties {
 
     private List<Consumer> consumerList;

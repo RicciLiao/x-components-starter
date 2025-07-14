@@ -1,4 +1,4 @@
-package ricciliao.x.starter.kfaka;
+package ricciliao.x.starter.kafka;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.BeansException;
@@ -10,7 +10,7 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 
 @PropsAutoConfiguration(
         properties = KafkaProducerAutoProperties.class,
-        conditionalOnProperties = "ricciliao.x.kafka.b.producer-list[0].topic",
+        conditionalOnProperties = "ricciliao.x.kafka.producer.producer-list[0].topic",
         after = KafkaAutoConfiguration.class
 )
 public class KafkaProducerAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<KafkaProducerAutoProperties> {

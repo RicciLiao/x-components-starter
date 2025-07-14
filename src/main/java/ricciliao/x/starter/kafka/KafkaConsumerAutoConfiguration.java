@@ -1,4 +1,4 @@
-package ricciliao.x.starter.kfaka;
+package ricciliao.x.starter.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @PropsAutoConfiguration(
         properties = KafkaConsumerAutoProperties.class,
-        conditionalOnProperties = "ricciliao.x.kafka.a.consumer-list[0].topic",
+        conditionalOnProperties = "ricciliao.x.kafka.consumer.consumer-list[0].topic",
         after = KafkaAutoConfiguration.class
 )
 public class KafkaConsumerAutoConfiguration {

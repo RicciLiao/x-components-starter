@@ -1,4 +1,4 @@
-package ricciliao.x.starter.kfaka;
+package ricciliao.x.starter.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Nonnull;
