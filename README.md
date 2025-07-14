@@ -38,7 +38,7 @@ it makes easier to use components to you.
 
 *Please refer to `x-dynamic-aop-component`*
 
-##### 📝 Configuration
+#### 📝 Configuration
 
 ```yaml
 ricciliao:
@@ -64,7 +64,7 @@ public class DynamicAspectAutoProperties {
 }
 ```
 
-##### ExpressionAspect.class
+#### ExpressionAspect.class
 
 * `beanName`: your unique aspect bean name.
 * `expression`: AspectJ pointcut expression
@@ -78,7 +78,7 @@ public class DynamicAspectAutoProperties {
 
 ***It is just for the consumer which use **Cache Provider** as data store.***
 
-##### 📝 Configuration
+#### 📝 Configuration
 
 ```yaml
 ricciliao:
@@ -162,12 +162,12 @@ public class ConsumerCacheProperties {
 }
 ```
 
-##### ConsumerCacheProperties.java
+#### ConsumerCacheProperties.java
 
 * `consumer`: define the identity code of service which use **Cache Provider**,
   it must same code as **Cache Provider**.
 
-##### OperationProperties .java
+#### OperationProperties .java
 
 * `store`: define the identity code of consumer data,
   it must same code as **Cache Provider**.
@@ -195,9 +195,9 @@ public class ConsumerCacheProperties {
     * `path`: interface path for retrieving provider information which in **Cache Provider**.
     * `method`: http method for this interface.
 
-##### 📝 Coding
+#### 📝 Coding
 
-* ##### ConsumerCacheRestService.class
+* #### ConsumerCacheRestService.class
 
 ```java
 public class ConsumerCacheRestService<T extends ConsumerCacheData> {
@@ -248,7 +248,7 @@ Cache CURD operation class for consumer.
 
 ---
 
-* ##### ConsumerCacheRestServiceFactoryBean.class
+* #### ConsumerCacheRestServiceFactoryBean.class
 
 ```java
 public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
@@ -309,9 +309,9 @@ public void setCodeConsumerCacheRestService(ConsumerCacheRestService<MessageCode
 
 *please refer to `x-common-components`*
 
-##### 📝 Configuration
+#### 📝 Configuration
 
-- **Common**
+**Common**
 
 ```yaml
 ricciliao:
@@ -337,11 +337,11 @@ public class CommonProperties {
 
 ---
 
-- **Kafka**
+**Kafka**
 
-##### Consumer
+- #### Consumer
 
-##### 📝 Configuration
+    - #### 📝 Configuration
 
 ```yaml
 ricciliao:
@@ -382,9 +382,9 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
 
 ---
 
-##### Producer
+- #### Producer
 
-##### 📝 Configuration
+    - #### 📝 Configuration
 
 ```yaml
 ricciliao:
@@ -410,11 +410,11 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
 }
 ```
 
-##### KafkaProducerAutoProperties.class
+#### KafkaProducerAutoProperties.class
 
 * `producerList`: your kafka producer list.
 
-##### Producer.class
+#### Producer.class
 
 * `topic`: your kafka producer topic.
 * `beanName`: your kafka producer bean name.
