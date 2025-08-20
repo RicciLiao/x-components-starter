@@ -6,11 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import ricciliao.x.component.context.TypedLifecycleBeanPostProcessor;
 import ricciliao.x.component.serialisation.LocalDateDeserializer;
 import ricciliao.x.component.serialisation.LocalDateSerializer;
 import ricciliao.x.component.serialisation.LocalDateTimeDeserializer;
@@ -20,6 +23,7 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 @PropsAutoConfiguration(
         properties = CommonAutoProperties.class,
@@ -53,6 +57,34 @@ public class CommonAutoConfiguration {
         objectMapper.registerModule(javaTimeModule);
 
         return objectMapper;
+    }
+
+    @Bean
+    public TypedLifecycleBeanPostProcessor<RequestMappingHandlerAdapter> adapterPostProcessor() {
+
+        return TypedLifecycleBeanPostProcessor.processor(new TypedLifecycleBeanPostProcessor.LifecycleProcessor<>() {
+
+            @Override
+            public boolean supports() {
+
+                return true;
+            }
+
+            @Override
+            public Class<RequestMappingHandlerAdapter> getBeanType() {
+
+                return RequestMappingHandlerAdapter.class;
+            }
+
+            @Override
+            public RequestMappingHandlerAdapter beforeInitialization(@Nonnull RequestMappingHandlerAdapter bean,
+                                                                     @Nonnull String beanName) {
+                bean.setResponseBodyAdvice(Collections.singletonList(new ResponseDataBlankAdvice()));
+
+                return bean;
+            }
+
+        });
     }
 
 }
