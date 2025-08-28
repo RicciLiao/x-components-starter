@@ -4,59 +4,79 @@ package ricciliao.x.starter.common;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import ricciliao.x.component.context.TypedLifecycleBeanPostProcessor;
-import ricciliao.x.component.serialisation.LocalDateDeserializer;
-import ricciliao.x.component.serialisation.LocalDateSerializer;
-import ricciliao.x.component.serialisation.LocalDateTimeDeserializer;
-import ricciliao.x.component.serialisation.LocalDateTimeSerializer;
+import ricciliao.x.component.response.ResponseAdvice;
+import ricciliao.x.component.response.ResponseHttpMessageConverter;
+import ricciliao.x.component.response.ResponseModule;
 import ricciliao.x.component.utils.SpringBeanUtils;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
+import java.util.TimeZone;
 
 @PropsAutoConfiguration(
-        properties = CommonAutoProperties.class,
-        before = JacksonAutoConfiguration.class
+        properties = CommonAutoProperties.class
 )
 public class CommonAutoConfiguration {
 
     public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
                                    @Autowired CommonAutoProperties props,
-                                   @Value("${spring.application.version}") String version,
+                                   @Autowired BuildProperties buildProps,
                                    @Value("${spring.application.name}") String name) {
         SpringBeanUtils.setApplicationContext(applicationContext);
-        props.setVersion(version);
+        props.setVersion(buildProps.getVersion());
         props.setConsumer(name);
+        props.setArtifact(buildProps.getArtifact());
+        props.setGroup(buildProps.getGroup());
     }
 
-    @Bean
-    public ObjectMapper objectMapper(@Autowired CommonAutoProperties props) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        objectMapper.setTimeZone(props.getTimeZone());
-        // objectMapper java.time.LocalDate/LocalDateTime
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.registerModule(new JavaTimeModule());
-        SimpleModule javaTimeModule = new SimpleModule();
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer());
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
-        objectMapper.registerModule(javaTimeModule);
+    @Configuration(proxyBeanMethods = false)
+    static class JacksonObjectMapperConfiguration {
+        @Bean
+        public Jackson2ObjectMapperBuilderCustomizer customizer(@Autowired CommonAutoProperties prps) {
 
-        return objectMapper;
+            return builder -> {
+                builder.featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+                builder.featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+                builder.timeZone(TimeZone.getDefault());
+                builder.modulesToInstall(
+                        modules -> {
+                            modules.add(new JavaTimeModule());
+                            modules.add(new ResponseModule(prps));
+                        });
+            };
+        }
+    }
+
+    @Configuration
+    static class CommonWebMvcConfiguration implements WebMvcConfigurer {
+
+        private ObjectMapper objectMapper;
+
+        @Autowired
+        public void setObjectMapper(ObjectMapper objectMapper) {
+            this.objectMapper = objectMapper;
+        }
+
+        @Override
+        public void extendMessageConverters(@Nonnull List<HttpMessageConverter<?>> converters) {
+            WebMvcConfigurer.super.extendMessageConverters(converters);
+            converters.addFirst(new ResponseHttpMessageConverter(objectMapper));
+        }
+
     }
 
     @Bean
@@ -79,7 +99,7 @@ public class CommonAutoConfiguration {
             @Override
             public RequestMappingHandlerAdapter beforeInitialization(@Nonnull RequestMappingHandlerAdapter bean,
                                                                      @Nonnull String beanName) {
-                bean.setResponseBodyAdvice(Collections.singletonList(new ResponseDataBlankAdvice()));
+                bean.setResponseBodyAdvice(Collections.singletonList(new ResponseAdvice()));
 
                 return bean;
             }
