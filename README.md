@@ -21,7 +21,7 @@ Please refer to `dependencies-control-center` for the version number.
 ### 📌 Usage
 
 The **Starter** base on spring starter design and integrates a series of x-components,
-you just need to config the components properties in your `application.yml`,
+you only need to config the components properties in your `application.yml`,
 then the starter will auto define components by your properties,
 it makes easier to use components to you.
 
@@ -328,6 +328,10 @@ public class CommonAutoProperties extends CommonProperties {
 ```java
 public class CommonProperties {
     private TimeZone timeZone;
+    private String consumer;
+    private String version;
+    private String artifact;
+    private String group;
 }
 ```
 
