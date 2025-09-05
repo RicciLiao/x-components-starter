@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
@@ -34,13 +34,12 @@ public class CommonAutoConfiguration {
 
     public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
                                    @Autowired CommonAutoProperties props,
-                                   @Autowired BuildProperties buildProps,
-                                   @Value("${spring.application.name}") String name) {
+                                   @Autowired BuildProperties buildProperties) {
         SpringBeanUtils.setApplicationContext(applicationContext);
-        props.setVersion(buildProps.getVersion());
-        props.setConsumer(name);
-        props.setArtifact(buildProps.getArtifact());
-        props.setGroup(buildProps.getGroup());
+        props.setVersion(buildProperties.getVersion());
+        props.setConsumer(buildProperties.getName());
+        props.setArtifact(buildProperties.getArtifact());
+        props.setGroup(buildProperties.getGroup());
     }
 
     @Configuration(proxyBeanMethods = false)
@@ -61,6 +60,7 @@ public class CommonAutoConfiguration {
         }
     }
 
+    @ConditionalOnClass(WebMvcConfigurer.class)
     @Configuration
     static class CommonWebMvcConfiguration implements WebMvcConfigurer {
 
@@ -79,6 +79,7 @@ public class CommonAutoConfiguration {
 
     }
 
+    @ConditionalOnClass(WebMvcConfigurer.class)
     @Bean
     public TypedLifecycleBeanPostProcessor<RequestMappingHandlerAdapter> adapterPostProcessor() {
 
