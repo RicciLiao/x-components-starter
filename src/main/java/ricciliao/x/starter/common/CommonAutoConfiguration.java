@@ -115,8 +115,7 @@ public class CommonAutoConfiguration implements Serializable {
                 }
 
                 @Override
-                public RequestMappingHandlerAdapter beforeInitialization(@Nonnull RequestMappingHandlerAdapter bean,
-                                                                         @Nonnull String beanName) {
+                public RequestMappingHandlerAdapter afterInitialization(@Nonnull RequestMappingHandlerAdapter bean, @Nonnull String beanName) {
                     List<HandlerMethodReturnValueHandler> originalHandlers = bean.getReturnValueHandlers();
                     List<HandlerMethodReturnValueHandler> newHandlers = new ArrayList<>();
                     if (CollectionUtils.isNotEmpty(originalHandlers)) {
@@ -127,7 +126,6 @@ public class CommonAutoConfiguration implements Serializable {
 
                     return bean;
                 }
-
             });
         }
 
