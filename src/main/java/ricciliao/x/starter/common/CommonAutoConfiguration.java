@@ -41,13 +41,13 @@ public class CommonAutoConfiguration implements Serializable {
     private static final long serialVersionUID = -5872892465550813182L;
 
     public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
-                                   @Autowired CommonAutoProperties props,
+                                   @Autowired CommonAutoProperties commonProps,
                                    @Autowired BuildProperties buildProperties) {
         SpringBeanUtils.setApplicationContext(applicationContext);
-        props.setVersion(buildProperties.getVersion());
-        props.setConsumer(buildProperties.getName());
-        props.setArtifact(buildProperties.getArtifact());
-        props.setGroup(buildProperties.getGroup());
+        commonProps.setVersion(buildProperties.getVersion());
+        commonProps.setConsumer(buildProperties.getName());
+        commonProps.setArtifact(buildProperties.getArtifact());
+        commonProps.setGroup(buildProperties.getGroup());
     }
 
     @Configuration(proxyBeanMethods = false)
