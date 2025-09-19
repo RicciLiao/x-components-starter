@@ -35,11 +35,6 @@
             <artifactId>common-components</artifactId>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>ricciliao.x</groupId>
-            <artifactId>audit-log-component</artifactId>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>ricciliao.x</groupId>

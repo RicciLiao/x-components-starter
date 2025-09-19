@@ -51,7 +51,7 @@ public class CommonAutoConfiguration implements Serializable {
     }
 
     @Configuration(proxyBeanMethods = false)
-    static class JacksonObjectMapperConfiguration {
+    public static class JacksonObjectMapperConfiguration {
         @Bean
         public Jackson2ObjectMapperBuilderCustomizer customizer(@Autowired CommonAutoProperties prps) {
 
@@ -70,7 +70,7 @@ public class CommonAutoConfiguration implements Serializable {
 
     @ConditionalOnClass(WebMvcConfigurer.class)
     @Configuration
-    static class CommonWebMvcConfiguration implements WebMvcConfigurer {
+    public static class CommonWebMvcConfiguration implements WebMvcConfigurer {
 
         private ObjectMapper objectMapper;
 

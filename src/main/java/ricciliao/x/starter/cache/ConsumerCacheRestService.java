@@ -1,6 +1,6 @@
 package ricciliao.x.starter.cache;
 
-import org.springframework.http.HttpStatus;
+import jakarta.annotation.Nullable;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
@@ -13,11 +13,11 @@ import ricciliao.x.cache.pojo.ConsumerOp;
 import ricciliao.x.cache.pojo.ProviderInfo;
 import ricciliao.x.cache.query.CacheBatchQuery;
 import ricciliao.x.component.response.Response;
+import ricciliao.x.component.response.ResponseUtils;
 import ricciliao.x.component.response.data.SimpleData;
 import ricciliao.x.component.rest.ResponseVoReferenceUtils;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class ConsumerCacheRestService<T extends ConsumerCacheData> {
 
@@ -36,6 +36,7 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
         this.storeClassName = storeClassName;
     }
 
+    @Nullable
     public SimpleData.Str create(ConsumerOp.Single<T> operation) throws RestClientException {
         operation.getData().setCacheKey(operation.getData().getData().generateCacheKey());
         UriComponentsBuilder uriComponentsBuilder = props.getCreate().toBuilder();
@@ -48,17 +49,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .body(operation),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Str.class)
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<SimpleData.Str> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public SimpleData.Bool update(ConsumerOp.Single<T> operation) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getUpdate().toBuilder();
         ResponseEntity<Response<SimpleData.Bool>> response =
@@ -70,17 +65,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .body(operation),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Bool.class)
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<SimpleData.Bool> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public SimpleData.Bool delete(String id) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getDelete().toBuilder();
         uriComponentsBuilder.uriVariables(Map.of("id", id));
@@ -93,17 +82,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .build(),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Bool.class)
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<SimpleData.Bool> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public ConsumerOp.Single<T> get(String id) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getGet().toBuilder();
         uriComponentsBuilder.uriVariables(Map.of("id", id));
@@ -116,17 +99,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .build(),
                         ResponseVoReferenceUtils.forClassWithGenerics(ConsumerOp.Single.class, storeClassName)
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<ConsumerOp.Single<T>> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public SimpleData.Bool batchCreate(ConsumerOp.Batch<T> operation) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getBatchCreate().toBuilder();
         ResponseEntity<Response<SimpleData.Bool>> response =
@@ -138,17 +115,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .body(operation),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Bool.class)
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<SimpleData.Bool> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public SimpleData.Bool batchDelete(CacheBatchQuery query) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getBatchDelete().toBuilder();
         ResponseEntity<Response<SimpleData.Bool>> response =
@@ -160,17 +131,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .body(query),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Bool.class)
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<SimpleData.Bool> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public ConsumerOp.Batch<T> list(CacheBatchQuery query) {
         UriComponentsBuilder uriComponentsBuilder = props.getList().toBuilder();
         ResponseEntity<Response<ConsumerOp.Batch<T>>> response =
@@ -183,16 +148,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                         ResponseVoReferenceUtils.forClassWithGenerics(ConsumerOp.Batch.class, storeClassName)
 
                 );
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<ConsumerOp.Batch<T>> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
+    @Nullable
     public ProviderInfo providerInfo() throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getProviderInfo().toBuilder();
         ResponseEntity<Response<ProviderInfo>> response =
@@ -205,15 +165,8 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                         ResponseVoReferenceUtils.withGenerics(ProviderInfo.class)
                 );
         ResponseVoReferenceUtils.withGenerics(ProviderInfo.class);
-        if (response.getStatusCode().equals(HttpStatus.OK)) {
-            Response<ProviderInfo> body = response.getBody();
-            if (Objects.nonNull(body)) {
 
-                return body.getData();
-            }
-        }
-
-        return null;
+        return ResponseUtils.safetyGetResponseData(response);
     }
 
 }
