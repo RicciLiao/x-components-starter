@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.Nonnull;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -31,6 +32,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 
 @PropsAutoConfiguration(
@@ -43,11 +45,16 @@ public class CommonAutoConfiguration implements Serializable {
     public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
                                    @Autowired CommonAutoProperties commonProps,
                                    @Autowired BuildProperties buildProperties) {
+        Object consumer = buildProperties.toPropertySource().getProperty("consumer");
+        if (Objects.isNull(consumer) || StringUtils.isBlank(consumer.toString())) {
+
+            throw new IllegalArgumentException();
+        }
         SpringBeanUtils.setApplicationContext(applicationContext);
         commonProps.setVersion(buildProperties.getVersion());
-        commonProps.setConsumer(buildProperties.getName());
         commonProps.setArtifact(buildProperties.getArtifact());
         commonProps.setGroup(buildProperties.getGroup());
+        commonProps.setConsumer(consumer.toString());
     }
 
     @Configuration(proxyBeanMethods = false)
