@@ -8,8 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ricciliao.x.cache.ConsumerCacheData;
 import ricciliao.x.cache.XCacheConstants;
+import ricciliao.x.cache.pojo.ConsumerCacheStore;
 import ricciliao.x.cache.pojo.ConsumerIdentifier;
-import ricciliao.x.cache.pojo.ConsumerOp;
 import ricciliao.x.cache.pojo.ProviderInfo;
 import ricciliao.x.cache.query.CacheBatchQuery;
 import ricciliao.x.component.response.Response;
@@ -17,6 +17,7 @@ import ricciliao.x.component.response.ResponseUtils;
 import ricciliao.x.component.response.data.SimpleData;
 import ricciliao.x.component.rest.ResponseVoReferenceUtils;
 
+import java.util.List;
 import java.util.Map;
 
 public class ConsumerCacheRestService<T extends ConsumerCacheData> {
@@ -37,8 +38,8 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
     }
 
     @Nullable
-    public SimpleData.Str create(ConsumerOp.Single<T> operation) throws RestClientException {
-        operation.getData().setCacheKey(operation.getData().getData().generateCacheKey());
+    public SimpleData.Str create(ConsumerCacheStore<T> store) throws RestClientException {
+        store.setCacheKey(store.getData().generateCacheKey());
         UriComponentsBuilder uriComponentsBuilder = props.getCreate().toBuilder();
         ResponseEntity<Response<SimpleData.Str>> response =
                 restTemplate.exchange(
@@ -46,7 +47,7 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .method(props.getCreate().toHttpMethod(), uriComponentsBuilder.build().encode().toUri())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_STORE, identifier.getStore())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_CUSTOMER, identifier.getConsumer())
-                                .body(operation),
+                                .body(store),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Str.class)
                 );
 
@@ -54,7 +55,7 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
     }
 
     @Nullable
-    public SimpleData.Bool update(ConsumerOp.Single<T> operation) throws RestClientException {
+    public SimpleData.Bool update(ConsumerCacheStore<T> store) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getUpdate().toBuilder();
         ResponseEntity<Response<SimpleData.Bool>> response =
                 restTemplate.exchange(
@@ -62,7 +63,7 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .method(props.getUpdate().toHttpMethod(), uriComponentsBuilder.build().encode().toUri())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_STORE, identifier.getStore())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_CUSTOMER, identifier.getConsumer())
-                                .body(operation),
+                                .body(store),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Bool.class)
                 );
 
@@ -87,24 +88,24 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
     }
 
     @Nullable
-    public ConsumerOp.Single<T> get(String id) throws RestClientException {
+    public ConsumerCacheStore<T> get(String id) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getGet().toBuilder();
         uriComponentsBuilder.uriVariables(Map.of("id", id));
-        ResponseEntity<Response<ConsumerOp.Single<T>>> response =
+        ResponseEntity<Response<ConsumerCacheStore<T>>> response =
                 restTemplate.exchange(
                         RequestEntity
                                 .method(props.getGet().toHttpMethod(), uriComponentsBuilder.build().encode().toUri())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_STORE, identifier.getStore())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_CUSTOMER, identifier.getConsumer())
                                 .build(),
-                        ResponseVoReferenceUtils.forClassWithGenerics(ConsumerOp.Single.class, storeClassName)
+                        ResponseVoReferenceUtils.forClassWithGenerics(ConsumerCacheStore.class, storeClassName)
                 );
 
         return ResponseUtils.safetyGetResponseData(response);
     }
 
     @Nullable
-    public SimpleData.Bool batchCreate(ConsumerOp.Batch<T> operation) throws RestClientException {
+    public SimpleData.Bool batchCreate(List<ConsumerCacheStore<T>> storeList) throws RestClientException {
         UriComponentsBuilder uriComponentsBuilder = props.getBatchCreate().toBuilder();
         ResponseEntity<Response<SimpleData.Bool>> response =
                 restTemplate.exchange(
@@ -112,7 +113,7 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
                                 .method(props.getBatchCreate().toHttpMethod(), uriComponentsBuilder.build().encode().toUri())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_STORE, identifier.getStore())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_CUSTOMER, identifier.getConsumer())
-                                .body(operation),
+                                .body(storeList),
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Bool.class)
                 );
 
@@ -136,16 +137,16 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
     }
 
     @Nullable
-    public ConsumerOp.Batch<T> list(CacheBatchQuery query) {
+    public ConsumerCacheStore.Batch<T> list(CacheBatchQuery query) {
         UriComponentsBuilder uriComponentsBuilder = props.getList().toBuilder();
-        ResponseEntity<Response<ConsumerOp.Batch<T>>> response =
+        ResponseEntity<Response<ConsumerCacheStore.Batch<T>>> response =
                 restTemplate.exchange(
                         RequestEntity
                                 .method(props.getList().toHttpMethod(), uriComponentsBuilder.build().encode().toUri())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_STORE, identifier.getStore())
                                 .header(XCacheConstants.HTTP_HEADER_FOR_CACHE_CUSTOMER, identifier.getConsumer())
                                 .body(query),
-                        ResponseVoReferenceUtils.forClassWithGenerics(ConsumerOp.Batch.class, storeClassName)
+                        ResponseVoReferenceUtils.forClassWithGenerics(ConsumerCacheStore.Batch.class, storeClassName)
 
                 );
 
