@@ -2,7 +2,7 @@ package ricciliao.x.starter.cache;
 
 
 import org.springframework.http.HttpMethod;
-import ricciliao.x.cache.ConsumerCacheData;
+import ricciliao.x.cache.ConsumerStore;
 import ricciliao.x.cache.XCacheConstants;
 import ricciliao.x.component.props.ApplicationProperties;
 import ricciliao.x.component.rest.RestPathProperties;
@@ -34,7 +34,7 @@ public class ConsumerCacheProperties extends ApplicationProperties {
     public static class OperationProperties {
 
         private String store;
-        private Class<? extends ConsumerCacheData> storeClassName;
+        private Class<? extends ConsumerStore> storeClassName;
         private CacheRestPathProperties create = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH, HttpMethod.POST);
         private CacheRestPathProperties update = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH, HttpMethod.PUT);
         private CacheRestPathProperties delete = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/{id}", HttpMethod.DELETE);
@@ -84,11 +84,11 @@ public class ConsumerCacheProperties extends ApplicationProperties {
             this.store = store;
         }
 
-        public Class<? extends ConsumerCacheData> getStoreClassName() {
+        public Class<? extends ConsumerStore> getStoreClassName() {
             return storeClassName;
         }
 
-        public void setStoreClassName(Class<? extends ConsumerCacheData> storeClassName) {
+        public void setStoreClassName(Class<? extends ConsumerStore> storeClassName) {
             this.storeClassName = storeClassName;
         }
 

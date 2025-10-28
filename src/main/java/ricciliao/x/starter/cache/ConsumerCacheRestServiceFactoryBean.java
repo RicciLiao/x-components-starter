@@ -6,10 +6,10 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.client.RestTemplate;
-import ricciliao.x.cache.ConsumerCacheData;
+import ricciliao.x.cache.ConsumerStore;
 import ricciliao.x.cache.pojo.ConsumerIdentifier;
 
-public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
+public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerStore> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
 
     private final String consumer;
     private final ConsumerCacheProperties.OperationProperties props;
