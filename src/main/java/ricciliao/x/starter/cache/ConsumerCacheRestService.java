@@ -18,7 +18,9 @@ import ricciliao.x.component.response.ResponseUtils;
 import ricciliao.x.component.response.data.SimpleData;
 import ricciliao.x.component.rest.ResponseVoReferenceUtils;
 
+import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 public class ConsumerCacheRestService<T extends ConsumerStore> {
 
@@ -136,7 +138,6 @@ public class ConsumerCacheRestService<T extends ConsumerStore> {
         return ResponseUtils.safetyGetResponseData(response);
     }
 
-    @Nullable
     public SimpleData.Collection<ConsumerCache<T>> list(CacheBatchQuery query) {
         UriComponentsBuilder uriComponentsBuilder = props.getList().toBuilder();
         ResponseEntity<Response<SimpleData.Collection<ConsumerCache<T>>>> response =
@@ -149,8 +150,13 @@ public class ConsumerCacheRestService<T extends ConsumerStore> {
                         ResponseVoReferenceUtils.withGenerics(SimpleData.Collection.class, ConsumerCache.class, storeClassName)
 
                 );
+        SimpleData.Collection<ConsumerCache<T>> result = ResponseUtils.safetyGetResponseData(response);
+        if (Objects.isNull(result)) {
 
-        return ResponseUtils.safetyGetResponseData(response);
+            return SimpleData.of(Collections.emptyList());
+        }
+
+        return result;
     }
 
     @Nullable
