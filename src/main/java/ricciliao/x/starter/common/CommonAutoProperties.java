@@ -19,11 +19,11 @@ public class CommonAutoProperties extends CommonProperties {
     }
 
     public static class SpringdocProperties {
+        private final Contact contact = new Contact().name("RicciLiao").name("riccix@163.com");
+        private final License license = new License();
         private boolean enable = false;
         private String title = "";
         private String description;
-        private final Contact contact = new Contact().name("RicciLiao").name("riccix@163.com");
-        private final License license = new License();
         private String summary = "";
 
         public Contact getContact() {

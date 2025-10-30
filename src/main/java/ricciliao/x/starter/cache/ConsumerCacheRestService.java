@@ -13,9 +13,9 @@ import ricciliao.x.cache.pojo.ConsumerIdentifier;
 import ricciliao.x.cache.pojo.ConsumerOperation;
 import ricciliao.x.cache.pojo.ProviderInfo;
 import ricciliao.x.cache.query.CacheBatchQuery;
-import ricciliao.x.component.response.Response;
-import ricciliao.x.component.response.ResponseUtils;
-import ricciliao.x.component.response.data.SimpleData;
+import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.response.Response;
+import ricciliao.x.component.payload.response.ResponseUtils;
 import ricciliao.x.component.rest.ResponseVoReferenceUtils;
 
 import java.util.Collections;
