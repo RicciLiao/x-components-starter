@@ -204,11 +204,11 @@ public class ConsumerCacheRestService<T extends ConsumerCacheData> {
 
     protected final RestTemplate restTemplate;
     protected final ConsumerCacheProperties.OperationProperties props;
-    protected final ConsumerIdentifier identifier;
+    protected final StoreIdentifier identifier;
     protected final Class<T> storeClassName;
 
     public ConsumerCacheRestService(ConsumerCacheProperties.OperationProperties props,
-                                    ConsumerIdentifier identifier,
+                                    StoreIdentifier identifier,
                                     RestTemplate restTemplate,
                                     Class<T> storeClassName) {
         this.props = props;
@@ -270,7 +270,7 @@ public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> im
 
         return new ConsumerCacheRestService<>(
                 props,
-                new ConsumerIdentifier(consumer, props.getStore()),
+                new StoreIdentifier(consumer, props.getStore()),
                 restTemplate,
                 (Class<T>) props.getStoreClassName()
         );
