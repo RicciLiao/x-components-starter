@@ -9,9 +9,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ricciliao.x.cache.ConsumerStore;
 import ricciliao.x.cache.XCacheConstants;
 import ricciliao.x.cache.pojo.ConsumerCache;
-import ricciliao.x.cache.pojo.ConsumerIdentifier;
 import ricciliao.x.cache.pojo.ConsumerOperation;
 import ricciliao.x.cache.pojo.ProviderInfo;
+import ricciliao.x.cache.pojo.StoreIdentifier;
 import ricciliao.x.cache.query.CacheBatchQuery;
 import ricciliao.x.component.payload.SimpleData;
 import ricciliao.x.component.payload.response.Response;
@@ -26,11 +26,11 @@ public class ConsumerCacheRestService<T extends ConsumerStore> {
 
     protected final RestTemplate restTemplate;
     protected final ConsumerCacheProperties.OperationProperties props;
-    protected final ConsumerIdentifier identifier;
+    protected final StoreIdentifier identifier;
     protected final Class<T> storeClassName;
 
     public ConsumerCacheRestService(ConsumerCacheProperties.OperationProperties props,
-                                    ConsumerIdentifier identifier,
+                                    StoreIdentifier identifier,
                                     RestTemplate restTemplate,
                                     Class<T> storeClassName) {
         this.props = props;

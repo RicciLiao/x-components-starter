@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.client.RestTemplate;
 import ricciliao.x.cache.ConsumerStore;
-import ricciliao.x.cache.pojo.ConsumerIdentifier;
+import ricciliao.x.cache.pojo.StoreIdentifier;
 
 public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerStore> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
 
@@ -28,7 +28,7 @@ public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerStore> implem
 
         return new ConsumerCacheRestService<>(
                 props,
-                new ConsumerIdentifier(consumer, props.getStore()),
+                new StoreIdentifier(consumer, props.getStore()),
                 restTemplate,
                 (Class<T>) props.getStoreClassName()
         );
