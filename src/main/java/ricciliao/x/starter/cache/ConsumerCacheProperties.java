@@ -12,15 +12,15 @@ import java.util.List;
 
 public class ConsumerCacheProperties extends ApplicationProperties {
 
-    private String consumer;
+    private String providerUrl = XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH;
     private List<OperationProperties> operationList = new ArrayList<>();
 
-    public String getConsumer() {
-        return consumer;
+    public String getProviderUrl() {
+        return providerUrl;
     }
 
-    public void setConsumer(String consumer) {
-        this.consumer = consumer;
+    public void setProviderUrl(String providerUrl) {
+        this.providerUrl = providerUrl;
     }
 
     public List<OperationProperties> getOperationList() {
@@ -35,14 +35,14 @@ public class ConsumerCacheProperties extends ApplicationProperties {
 
         private String store;
         private Class<? extends ConsumerStore> storeClassName;
-        private CacheRestPathProperties create = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH, HttpMethod.POST);
-        private CacheRestPathProperties update = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH, HttpMethod.PUT);
-        private CacheRestPathProperties delete = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/{id}", HttpMethod.DELETE);
-        private CacheRestPathProperties get = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/{id}", HttpMethod.GET);
-        private CacheRestPathProperties batchCreate = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/batch", HttpMethod.POST);
-        private CacheRestPathProperties batchDelete = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/batch", HttpMethod.DELETE);
-        private CacheRestPathProperties list = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/list", HttpMethod.POST);
-        private CacheRestPathProperties providerInfo = new CacheRestPathProperties(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH + "/extra/providerInfo", HttpMethod.GET);
+        private CacheRestPathProperties create = new CacheRestPathProperties("", HttpMethod.POST);
+        private CacheRestPathProperties update = new CacheRestPathProperties("", HttpMethod.PUT);
+        private CacheRestPathProperties delete = new CacheRestPathProperties("/{id}", HttpMethod.DELETE);
+        private CacheRestPathProperties get = new CacheRestPathProperties("/{id}", HttpMethod.GET);
+        private CacheRestPathProperties batchCreate = new CacheRestPathProperties("/batch", HttpMethod.POST);
+        private CacheRestPathProperties batchDelete = new CacheRestPathProperties("/batch", HttpMethod.DELETE);
+        private CacheRestPathProperties list = new CacheRestPathProperties("/list", HttpMethod.POST);
+        private CacheRestPathProperties providerInfo = new CacheRestPathProperties("/extra/providerInfo", HttpMethod.GET);
 
         public CacheRestPathProperties getBatchDelete() {
             return batchDelete;

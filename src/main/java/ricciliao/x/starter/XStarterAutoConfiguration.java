@@ -7,8 +7,6 @@ import ricciliao.x.starter.aop.DynamicAspectAutoProperties;
 import ricciliao.x.starter.cache.ConsumerCacheAutoProperties;
 import ricciliao.x.starter.common.CommonAutoProperties;
 
-import java.util.Objects;
-
 @AutoConfiguration
 public class XStarterAutoConfiguration {
 
@@ -16,9 +14,6 @@ public class XStarterAutoConfiguration {
     public XProperties xProperties(@Autowired CommonAutoProperties commonProps,
                                    @Autowired(required = false) DynamicAspectAutoProperties dynamicAspectProps,
                                    @Autowired(required = false) ConsumerCacheAutoProperties consumerCacheProps) {
-        if (Objects.nonNull(consumerCacheProps)) {
-            consumerCacheProps.setConsumer(commonProps.getConsumer());
-        }
 
         return new XProperties(commonProps, dynamicAspectProps, consumerCacheProps);
     }
