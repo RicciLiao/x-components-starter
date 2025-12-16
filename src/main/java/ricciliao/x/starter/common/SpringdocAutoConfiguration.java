@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import ricciliao.x.starter.PropsAutoConfiguration;
@@ -25,9 +26,12 @@ import ricciliao.x.starter.PropsAutoConfiguration;
 public class SpringdocAutoConfiguration {
 
     private final CommonAutoProperties commonProps;
+    private final BuildProperties buildProps;
 
-    public SpringdocAutoConfiguration(@Autowired CommonAutoProperties commonProps) {
+    public SpringdocAutoConfiguration(@Autowired CommonAutoProperties commonProps,
+                                      @Autowired BuildProperties buildProps) {
         this.commonProps = commonProps;
+        this.buildProps = buildProps;
     }
 
 
@@ -40,7 +44,7 @@ public class SpringdocAutoConfiguration {
                         .contact(new Contact().name("A contact"))
                         .license(new License().name("A License"))
                         .summary("A summary")
-                        .version(commonProps.getVersion());
+                        .version(buildProps.getVersion());
         Components components =
                 new Components()
                         .addSecuritySchemes(

@@ -31,7 +31,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 @PropsAutoConfiguration(
         properties = CommonAutoProperties.class
@@ -40,27 +39,23 @@ public class CommonAutoConfiguration implements Serializable {
     @Serial
     private static final long serialVersionUID = -5872892465550813182L;
 
-    public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext,
-                                   @Autowired CommonAutoProperties commonProps,
-                                   @Autowired BuildProperties buildProperties) {
+    public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext) {
         SpringBeanUtils.setApplicationContext(applicationContext);
-        commonProps.setArtifact(buildProperties.getArtifact());
-        commonProps.setGroup(buildProperties.getGroup());
     }
 
     @Configuration(proxyBeanMethods = false)
     public static class JacksonObjectMapperConfiguration {
+
         @Bean
-        public Jackson2ObjectMapperBuilderCustomizer customizer(@Autowired CommonAutoProperties prps) {
+        public Jackson2ObjectMapperBuilderCustomizer customizer(@Autowired BuildProperties props) {
 
             return builder -> {
                 builder.featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
                 builder.featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-                builder.timeZone(TimeZone.getDefault());
                 builder.modulesToInstall(
                         modules -> {
                             modules.add(new JavaTimeModule());
-                            modules.add(new ResponseModule(prps));
+                            modules.add(new ResponseModule(props));
                         });
             };
         }
