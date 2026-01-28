@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import ricciliao.x.starter.aop.DynamicAspectAutoProperties;
-import ricciliao.x.starter.cache.ConsumerCacheAutoProperties;
 import ricciliao.x.starter.common.CommonAutoProperties;
+import ricciliao.x.starter.mcp.ConsumerCacheAutoProperties;
 
 @AutoConfiguration
 public class XStarterAutoConfiguration {

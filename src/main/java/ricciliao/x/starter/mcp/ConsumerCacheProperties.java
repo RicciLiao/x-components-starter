@@ -1,26 +1,26 @@
-package ricciliao.x.starter.cache;
+package ricciliao.x.starter.mcp;
 
 
 import org.springframework.http.HttpMethod;
-import ricciliao.x.cache.ConsumerStore;
-import ricciliao.x.cache.XCacheConstants;
 import ricciliao.x.component.props.ApplicationProperties;
 import ricciliao.x.component.rest.RestPathProperties;
+import ricciliao.x.mcp.ConsumerCacheData;
+import ricciliao.x.mcp.McpConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConsumerCacheProperties extends ApplicationProperties {
 
-    private String providerUrl = XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH;
+    private String url = McpConstants.DEFAULT_PROVIDER_OPERATION_PATH;
     private List<OperationProperties> operationList = new ArrayList<>();
 
-    public String getProviderUrl() {
-        return providerUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setProviderUrl(String providerUrl) {
-        this.providerUrl = providerUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public List<OperationProperties> getOperationList() {
@@ -34,7 +34,7 @@ public class ConsumerCacheProperties extends ApplicationProperties {
     public static class OperationProperties {
 
         private String store;
-        private Class<? extends ConsumerStore> storeClassName;
+        private Class<? extends ConsumerCacheData> dataClassName;
         private CacheRestPathProperties create = new CacheRestPathProperties("", HttpMethod.POST);
         private CacheRestPathProperties update = new CacheRestPathProperties("", HttpMethod.PUT);
         private CacheRestPathProperties delete = new CacheRestPathProperties("/{id}", HttpMethod.DELETE);
@@ -42,7 +42,7 @@ public class ConsumerCacheProperties extends ApplicationProperties {
         private CacheRestPathProperties batchCreate = new CacheRestPathProperties("/batch", HttpMethod.POST);
         private CacheRestPathProperties batchDelete = new CacheRestPathProperties("/batch", HttpMethod.DELETE);
         private CacheRestPathProperties list = new CacheRestPathProperties("/list", HttpMethod.POST);
-        private CacheRestPathProperties providerInfo = new CacheRestPathProperties("/extra/providerInfo", HttpMethod.GET);
+        private CacheRestPathProperties info = new CacheRestPathProperties("/extra/info", HttpMethod.GET);
 
         public CacheRestPathProperties getBatchDelete() {
             return batchDelete;
@@ -60,12 +60,12 @@ public class ConsumerCacheProperties extends ApplicationProperties {
             this.list = list;
         }
 
-        public CacheRestPathProperties getProviderInfo() {
-            return providerInfo;
+        public CacheRestPathProperties getInfo() {
+            return info;
         }
 
-        public void setProviderInfo(CacheRestPathProperties providerInfo) {
-            this.providerInfo = providerInfo;
+        public void setInfo(CacheRestPathProperties info) {
+            this.info = info;
         }
 
         public CacheRestPathProperties getBatchCreate() {
@@ -84,12 +84,12 @@ public class ConsumerCacheProperties extends ApplicationProperties {
             this.store = store;
         }
 
-        public Class<? extends ConsumerStore> getStoreClassName() {
-            return storeClassName;
+        public Class<? extends ConsumerCacheData> getDataClassName() {
+            return dataClassName;
         }
 
-        public void setStoreClassName(Class<? extends ConsumerStore> storeClassName) {
-            this.storeClassName = storeClassName;
+        public void setDataClassName(Class<? extends ConsumerCacheData> dataClassName) {
+            this.dataClassName = dataClassName;
         }
 
         public CacheRestPathProperties getCreate() {

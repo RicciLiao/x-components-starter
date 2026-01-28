@@ -21,9 +21,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import ricciliao.x.component.context.TypedLifecycleBeanPostProcessor;
 import ricciliao.x.component.payload.response.ResponseExceptionResolver;
+import ricciliao.x.component.payload.response.ResponseHandler;
 import ricciliao.x.component.payload.response.ResponseHttpMessageConverter;
 import ricciliao.x.component.payload.response.ResponseModule;
-import ricciliao.x.component.payload.response.ResponseValueHandler;
 import ricciliao.x.component.utils.SpringBeanUtils;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
@@ -114,7 +114,7 @@ public class CommonAutoConfiguration implements Serializable {
                     if (CollectionUtils.isNotEmpty(originalHandlers)) {
                         newHandlers.addAll(originalHandlers);
                     }
-                    newHandlers.addFirst(new ResponseValueHandler(responseHttpMessageConverter()));
+                    newHandlers.addFirst(new ResponseHandler(responseHttpMessageConverter()));
                     bean.setReturnValueHandlers(newHandlers);
 
                     return bean;

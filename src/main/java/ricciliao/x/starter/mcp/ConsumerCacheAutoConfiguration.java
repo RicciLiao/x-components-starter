@@ -1,4 +1,4 @@
-package ricciliao.x.starter.cache;
+package ricciliao.x.starter.mcp;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.BeansException;
@@ -6,13 +6,12 @@ import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.web.client.RestClient;
-import ricciliao.x.cache.XCacheConstants;
 import ricciliao.x.component.context.PropsBeanDefinitionRegistryPostProcessor;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
 @PropsAutoConfiguration(
         properties = ConsumerCacheAutoProperties.class,
-        conditionalOnProperties = "ricciliao.x.cache-consumer-client.operation-list[0].store",
+        conditionalOnProperties = "ricciliao.x.mcp.operation-list[0].store",
         after = ConsumerCacheAutoProperties.class
 )
 public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryPostProcessor<ConsumerCacheAutoProperties> {
@@ -26,7 +25,7 @@ public class ConsumerCacheAutoConfiguration extends PropsBeanDefinitionRegistryP
         RestClient.Builder builder =
                 RestClient
                         .builder()
-                        .baseUrl(XCacheConstants.DEFAULT_PROVIDER_OPERATION_PATH);
+                        .baseUrl(this.getProps().getUrl());
         for (ConsumerCacheProperties.OperationProperties operation : this.getProps().getOperationList()) {
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
             beanDefinition.setBeanClass(ConsumerCacheRestServiceFactoryBean.class);
