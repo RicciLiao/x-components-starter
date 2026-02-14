@@ -14,10 +14,12 @@ import ricciliao.x.mcp.McpConstants;
 import ricciliao.x.mcp.McpIdentifier;
 import ricciliao.x.starter.common.CommonAutoProperties;
 
+import javax.annotation.Nullable;
+
 public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
 
     private final ConsumerCacheProperties.OperationProperties props;
-    private final  RestClient.Builder builder;
+    private final RestClient.Builder builder;
 
     private ApplicationContext applicationContext;
 
@@ -44,11 +46,12 @@ public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> im
         return new ConsumerCacheRestService<>(
                 props,
                 new McpIdentifier(commonProps.getConsumer(), props.getStore()),
-                (Class<T>) props.getDataClassName(),
+                (Class<T>) props.getDataType(),
                 builder.build()
         );
     }
 
+    @Nullable
     @Override
     public Class<?> getObjectType() {
 

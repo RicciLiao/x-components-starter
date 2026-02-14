@@ -6,45 +6,69 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.annotation.Nonnull;
-import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import ricciliao.x.component.context.TypedLifecycleBeanPostProcessor;
 import ricciliao.x.component.payload.response.ResponseExceptionResolver;
-import ricciliao.x.component.payload.response.ResponseHandler;
 import ricciliao.x.component.payload.response.ResponseHttpMessageConverter;
 import ricciliao.x.component.payload.response.ResponseModule;
 import ricciliao.x.component.utils.SpringBeanUtils;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
+@Configuration
 @PropsAutoConfiguration(
         properties = CommonAutoProperties.class
 )
-public class CommonAutoConfiguration implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -5872892465550813182L;
+public class CommonAutoConfiguration implements WebMvcConfigurer {
+
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public CommonAutoConfiguration(@Autowired ApplicationContext applicationContext) {
         SpringBeanUtils.setApplicationContext(applicationContext);
     }
 
+    @Bean
+    public ResponseHttpMessageConverter responseHttpMessageConverter() {
+
+        return new ResponseHttpMessageConverter(objectMapper);
+    }
+
+    /**
+     * @param responseHttpMessageConverter must be an {@link BeanPostProcessor}, lazy injection.
+     */
+    @Bean
+    public static RequestMappingHandlerAdapterPostProcess requestMappingHandlerAdapterPostProcess(ObjectProvider<ResponseHttpMessageConverter> responseHttpMessageConverter) {
+
+        return new RequestMappingHandlerAdapterPostProcess(responseHttpMessageConverter);
+    }
+
+    @Override
+    public void extendMessageConverters(@Nonnull List<HttpMessageConverter<?>> converters) {
+        converters.addFirst(responseHttpMessageConverter());
+    }
+
+    @Override
+    public void extendHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
+        resolvers.addFirst(new ResponseExceptionResolver(responseHttpMessageConverter()));
+    }
+
     @Configuration(proxyBeanMethods = false)
-    public static class JacksonObjectMapperConfiguration {
+    static class JacksonObjectMapperAutoConfiguration {
 
         @Bean
         public Jackson2ObjectMapperBuilderCustomizer customizer(@Autowired BuildProperties props) {
@@ -58,68 +82,6 @@ public class CommonAutoConfiguration implements Serializable {
                             modules.add(new ResponseModule(props));
                         });
             };
-        }
-    }
-
-    @ConditionalOnClass(WebMvcConfigurer.class)
-    @Configuration
-    public static class CommonWebMvcConfiguration implements WebMvcConfigurer {
-
-        private ObjectMapper objectMapper;
-
-        @Autowired
-        public void setObjectMapper(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
-        }
-
-        @Bean
-        public ResponseHttpMessageConverter responseHttpMessageConverter() {
-
-            return new ResponseHttpMessageConverter(objectMapper);
-        }
-
-        @Override
-        public void extendMessageConverters(@Nonnull List<HttpMessageConverter<?>> converters) {
-            WebMvcConfigurer.super.extendMessageConverters(converters);
-            converters.addFirst(responseHttpMessageConverter());
-        }
-
-        @Override
-        public void extendHandlerExceptionResolvers(@Nonnull List<HandlerExceptionResolver> resolvers) {
-            WebMvcConfigurer.super.extendHandlerExceptionResolvers(resolvers);
-            resolvers.addFirst(new ResponseExceptionResolver(responseHttpMessageConverter()));
-        }
-
-        @Bean
-        public TypedLifecycleBeanPostProcessor<RequestMappingHandlerAdapter> adapterPostProcessor() {
-
-            return TypedLifecycleBeanPostProcessor.processor(new TypedLifecycleBeanPostProcessor.LifecycleProcessor<>() {
-
-                @Override
-                public boolean supports() {
-
-                    return true;
-                }
-
-                @Override
-                public Class<RequestMappingHandlerAdapter> getBeanType() {
-
-                    return RequestMappingHandlerAdapter.class;
-                }
-
-                @Override
-                public RequestMappingHandlerAdapter afterInitialization(@Nonnull RequestMappingHandlerAdapter bean, @Nonnull String beanName) {
-                    List<HandlerMethodReturnValueHandler> originalHandlers = bean.getReturnValueHandlers();
-                    List<HandlerMethodReturnValueHandler> newHandlers = new ArrayList<>();
-                    if (CollectionUtils.isNotEmpty(originalHandlers)) {
-                        newHandlers.addAll(originalHandlers);
-                    }
-                    newHandlers.addFirst(new ResponseHandler(responseHttpMessageConverter()));
-                    bean.setReturnValueHandlers(newHandlers);
-
-                    return bean;
-                }
-            });
         }
 
     }

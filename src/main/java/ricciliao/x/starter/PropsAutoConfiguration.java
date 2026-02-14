@@ -3,8 +3,8 @@ package ricciliao.x.starter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
-import ricciliao.x.component.props.ApplicationProperties;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -18,6 +18,7 @@ import java.lang.annotation.Target;
 @AutoConfiguration
 @EnableConfigurationProperties
 @Conditional(PropsAutoConfigurationCondition.class)
+@Import(value = {})
 public @interface PropsAutoConfiguration {
 
     @AliasFor(annotation = AutoConfiguration.class, attribute = "value")
@@ -36,7 +37,10 @@ public @interface PropsAutoConfiguration {
     String[] afterName() default {};
 
     @AliasFor(annotation = EnableConfigurationProperties.class, attribute = "value")
-    Class<? extends ApplicationProperties>[] properties();
+    Class<?>[] properties();
+
+    @AliasFor(annotation = Import.class, attribute = "value")
+    Class<?>[] imports() default {};
 
     String[] conditionalOnProperties() default {};
 

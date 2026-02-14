@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ConfigurationProperties("ricciliao.x.dynamic-aspect")
-public class DynamicAspectAutoProperties extends ApplicationProperties {
+public class DynamicAspectAutoProperties implements ApplicationProperties {
 
     private List<ExpressionAspect> aspectList = new ArrayList<>();
 

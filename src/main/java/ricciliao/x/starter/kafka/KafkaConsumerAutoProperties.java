@@ -1,7 +1,7 @@
 package ricciliao.x.starter.kafka;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import ricciliao.x.component.kafka.KafkaHandler;
+import ricciliao.x.component.kafka.KafkaConsumerHandler;
 import ricciliao.x.component.kafka.KafkaMessageDto;
 import ricciliao.x.component.props.ApplicationProperties;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @ConfigurationProperties("ricciliao.x.kafka.consumer")
-public class KafkaConsumerAutoProperties extends ApplicationProperties {
+public class KafkaConsumerAutoProperties implements ApplicationProperties {
 
     private List<Consumer> consumerList;
 
@@ -36,8 +36,7 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
     public static class Consumer {
         private String topic;
         private String group;
-        private Class<KafkaHandler<KafkaMessageDto>> handler;
-        private String beanName;
+        private Class<? extends KafkaConsumerHandler<? extends KafkaMessageDto>> handler;
 
         public String getTopic() {
             return topic;
@@ -55,20 +54,17 @@ public class KafkaConsumerAutoProperties extends ApplicationProperties {
             this.group = group;
         }
 
-        public Class<KafkaHandler<KafkaMessageDto>> getHandler() {
+        public Class<? extends KafkaConsumerHandler<? extends KafkaMessageDto>> getHandler() {//NOSONAR
             return handler;
         }
 
-        public void setHandler(Class<KafkaHandler<KafkaMessageDto>> handler) {
+        public void setHandler(Class<? extends KafkaConsumerHandler<? extends KafkaMessageDto>> handler) {
             this.handler = handler;
         }
 
-        public String getBeanName() {
-            return beanName;
-        }
+        public String buildBeanNamePrefix() {
 
-        public void setBeanName(String beanName) {
-            this.beanName = beanName;
+            return this.getGroup() + this.getTopic().substring(0, 1).toUpperCase() + this.getTopic().substring(1);
         }
 
     }

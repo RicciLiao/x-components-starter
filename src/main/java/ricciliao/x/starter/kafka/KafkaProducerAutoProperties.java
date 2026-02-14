@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @ConfigurationProperties("ricciliao.x.kafka.producer")
-public class KafkaProducerAutoProperties extends ApplicationProperties {
+public class KafkaProducerAutoProperties implements ApplicationProperties {
 
     private List<Producer> producerList;
 
@@ -34,7 +34,7 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
 
     public static class Producer {
         private String topic;
-        private Class<KafkaMessageDto> messageClass;
+        private Class<? extends KafkaMessageDto> messageClass;
         private String beanName;
 
         public String getBeanName() {
@@ -53,11 +53,11 @@ public class KafkaProducerAutoProperties extends ApplicationProperties {
             this.topic = topic;
         }
 
-        public Class<KafkaMessageDto> getMessageClass() {
+        public Class<? extends KafkaMessageDto> getMessageClass() {
             return messageClass;
         }
 
-        public void setMessageClass(Class<KafkaMessageDto> messageClass) {
+        public void setMessageClass(Class<? extends KafkaMessageDto> messageClass) {
             this.messageClass = messageClass;
         }
 

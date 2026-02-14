@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import ricciliao.x.component.props.ApplicationProperties;
 
 @ConfigurationProperties("ricciliao.x.log")
-public class AuditLogAutoProperties extends ApplicationProperties {
+public class AuditLogAutoProperties implements ApplicationProperties {
 
     private Executor executor;
 

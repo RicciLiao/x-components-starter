@@ -10,7 +10,7 @@ import ricciliao.x.mcp.McpConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsumerCacheProperties extends ApplicationProperties {
+public class ConsumerCacheProperties implements ApplicationProperties {
 
     private String url = McpConstants.DEFAULT_PROVIDER_OPERATION_PATH;
     private List<OperationProperties> operationList = new ArrayList<>();
@@ -34,7 +34,7 @@ public class ConsumerCacheProperties extends ApplicationProperties {
     public static class OperationProperties {
 
         private String store;
-        private Class<? extends ConsumerCacheData> dataClassName;
+        private Class<? extends ConsumerCacheData> dataType;
         private CacheRestPathProperties create = new CacheRestPathProperties("", HttpMethod.POST);
         private CacheRestPathProperties update = new CacheRestPathProperties("", HttpMethod.PUT);
         private CacheRestPathProperties delete = new CacheRestPathProperties("/{id}", HttpMethod.DELETE);
@@ -84,12 +84,12 @@ public class ConsumerCacheProperties extends ApplicationProperties {
             this.store = store;
         }
 
-        public Class<? extends ConsumerCacheData> getDataClassName() {
-            return dataClassName;
+        public Class<? extends ConsumerCacheData> getDataType() {
+            return dataType;
         }
 
-        public void setDataClassName(Class<? extends ConsumerCacheData> dataClassName) {
-            this.dataClassName = dataClassName;
+        public void setDataType(Class<? extends ConsumerCacheData> dataType) {
+            this.dataType = dataType;
         }
 
         public CacheRestPathProperties getCreate() {
