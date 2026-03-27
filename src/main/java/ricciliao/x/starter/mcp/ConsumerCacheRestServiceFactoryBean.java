@@ -1,6 +1,5 @@
 package ricciliao.x.starter.mcp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -29,19 +28,20 @@ public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> im
         this.builder = builder.clone();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public ConsumerCacheRestService<T> getObject() {
         CommonAutoProperties commonProps = applicationContext.getBean(CommonAutoProperties.class);
-        ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
+        ResponseHttpMessageConverter responseHttpMessageConverter = applicationContext.getBean(ResponseHttpMessageConverter.class);
+        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = applicationContext.getBean(MappingJackson2HttpMessageConverter.class);
 
         builder.defaultHeader(McpConstants.HTTP_HEADER_FOR_CACHE_STORE, props.getStore())
                 .defaultHeader(McpConstants.HTTP_HEADER_FOR_CACHE_CUSTOMER, commonProps.getConsumer())
                 .messageConverters(httpMessageConverters -> {
                     httpMessageConverters.clear();
-                    httpMessageConverters.add(new ResponseHttpMessageConverter(objectMapper));
-                    httpMessageConverters.add(new MappingJackson2HttpMessageConverter(objectMapper));
-                })
-        ;
+                    httpMessageConverters.add(responseHttpMessageConverter);
+                    httpMessageConverters.add(mappingJackson2HttpMessageConverter);
+                });
 
         return new ConsumerCacheRestService<>(
                 props,
