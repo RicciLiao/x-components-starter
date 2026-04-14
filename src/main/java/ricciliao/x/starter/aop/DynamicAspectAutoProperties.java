@@ -23,8 +23,17 @@ public class DynamicAspectAutoProperties implements ApplicationProperties {
 
     public static class ExpressionAspect {
 
+        /**
+         * Unique AspectJ bean name.
+         */
         private String beanName;
+        /**
+         * AspectJ pointcut expression.
+         */
         private String expression;
+        /**
+         * Fully qualified name of the AspectJ which must extends {@link ricciliao.x.aop.DynamicAspect}.
+         */
         private Class<? extends DynamicAspect> aspect;
 
         public String getBeanName() {

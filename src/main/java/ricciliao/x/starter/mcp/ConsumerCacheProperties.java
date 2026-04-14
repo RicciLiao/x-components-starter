@@ -12,6 +12,10 @@ import java.util.List;
 
 public class ConsumerCacheProperties implements ApplicationProperties {
 
+    /**
+     * MCP service interface address.
+     * Defaults to {@value McpConstants#DEFAULT_PROVIDER_OPERATION_PATH}.
+     */
     private String url = McpConstants.DEFAULT_PROVIDER_OPERATION_PATH;
     private List<OperationProperties> operationList = new ArrayList<>();
 
@@ -33,15 +37,56 @@ public class ConsumerCacheProperties implements ApplicationProperties {
 
     public static class OperationProperties {
 
+        /**
+         * Identification of the cache data.
+         * The metadata of {@link ricciliao.x.mcp.McpIdentifier}.
+         */
         private String store;
+        /**
+         * Fully qualified name of the cache data type which must extends {@link ricciliao.x.mcp.ConsumerCacheData}.
+         */
         private Class<? extends ConsumerCacheData> dataType;
+        /**
+         * Endpoint and http method for creating cache.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.POST)}.
+         */
         private CacheRestPathProperties create = new CacheRestPathProperties("", HttpMethod.POST);
+        /**
+         * Endpoint and http method for updating cache.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.PUT)}.
+         */
         private CacheRestPathProperties update = new CacheRestPathProperties("", HttpMethod.PUT);
+        /**
+         * Endpoint and http method for deleting cache.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.DELETE)}.
+         */
         private CacheRestPathProperties delete = new CacheRestPathProperties("/{id}", HttpMethod.DELETE);
+        /**
+         * Endpoint and http method for querying cache.
+         * This Endpoint only return a single of data.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.GET)}.
+         */
         private CacheRestPathProperties get = new CacheRestPathProperties("/{id}", HttpMethod.GET);
+        /**
+         * Endpoint and http method for batch creating cache.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/batch", HttpMethod.POST)}.
+         */
         private CacheRestPathProperties batchCreate = new CacheRestPathProperties("/batch", HttpMethod.POST);
+        /**
+         * Endpoint and http method for batch deleting cache.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/batch", HttpMethod.DELETE)}.
+         */
         private CacheRestPathProperties batchDelete = new CacheRestPathProperties("/batch", HttpMethod.DELETE);
+        /**
+         * Endpoint and http method for batch querying cache.
+         * This Endpoint can return a batch of data.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/list", HttpMethod.POST)}.
+         */
         private CacheRestPathProperties list = new CacheRestPathProperties("/list", HttpMethod.POST);
+        /**
+         * Endpoint and http method for batch querying MCP information.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/extra/info", HttpMethod.GET)}.
+         */
         private CacheRestPathProperties info = new CacheRestPathProperties("/extra/info", HttpMethod.GET);
 
         public CacheRestPathProperties getBatchDelete() {
@@ -130,6 +175,9 @@ public class ConsumerCacheProperties implements ApplicationProperties {
                 //default constructor
             }
 
+            /**
+             *
+             */
             public CacheRestPathProperties(String path, HttpMethod method) {
                 super();
                 this.setPath(path);

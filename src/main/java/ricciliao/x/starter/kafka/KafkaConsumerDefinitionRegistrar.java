@@ -1,6 +1,7 @@
 package ricciliao.x.starter.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Nonnull;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
@@ -18,7 +19,6 @@ import ricciliao.x.component.kafka.KafkaConsumer;
 import ricciliao.x.component.kafka.KafkaConsumerHandler;
 import ricciliao.x.component.kafka.KafkaMessageDto;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;

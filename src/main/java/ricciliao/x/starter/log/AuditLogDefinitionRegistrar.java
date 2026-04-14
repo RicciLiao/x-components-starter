@@ -1,14 +1,13 @@
 package ricciliao.x.starter.log;
 
 
+import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import ricciliao.x.component.beans.PropsImportBeanDefinitionRegistrar;
 import ricciliao.x.log.MdcSupportTaskDecorator;
-
-import javax.annotation.Nonnull;
 
 public class AuditLogDefinitionRegistrar extends PropsImportBeanDefinitionRegistrar<AuditLogAutoProperties> {
 

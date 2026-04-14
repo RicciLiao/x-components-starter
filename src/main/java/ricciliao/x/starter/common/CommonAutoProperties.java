@@ -3,12 +3,24 @@ package ricciliao.x.starter.common;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.License;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import ricciliao.x.component.props.CommonProperties;
+import ricciliao.x.component.props.ApplicationProperties;
 
 @ConfigurationProperties("ricciliao.x.common")
-public class CommonAutoProperties extends CommonProperties {
+public class CommonAutoProperties implements ApplicationProperties {
 
+    /**
+     * Application unique name. The metadata of {@link ricciliao.x.mcp.McpIdentifier}.
+     */
+    private String consumer;
     private SpringdocProperties springdoc;
+
+    public String getConsumer() {
+        return consumer;
+    }
+
+    public void setConsumer(String consumer) {
+        this.consumer = consumer;
+    }
 
     public SpringdocProperties getSpringdoc() {
         return springdoc;

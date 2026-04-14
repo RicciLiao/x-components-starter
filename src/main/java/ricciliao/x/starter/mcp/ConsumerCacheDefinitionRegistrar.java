@@ -1,13 +1,12 @@
 package ricciliao.x.starter.mcp;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.web.client.RestClient;
 import ricciliao.x.component.beans.PropsImportBeanDefinitionRegistrar;
-
-import javax.annotation.Nonnull;
 
 public class ConsumerCacheDefinitionRegistrar extends PropsImportBeanDefinitionRegistrar<ConsumerCacheAutoProperties> {
 

@@ -1,6 +1,7 @@
 package ricciliao.x.starter.mcp;
 
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -12,8 +13,6 @@ import ricciliao.x.mcp.ConsumerCacheData;
 import ricciliao.x.mcp.McpConstants;
 import ricciliao.x.mcp.McpIdentifier;
 import ricciliao.x.starter.common.CommonAutoProperties;
-
-import javax.annotation.Nullable;
 
 public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
 

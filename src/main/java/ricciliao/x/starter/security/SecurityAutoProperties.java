@@ -8,8 +8,14 @@ import ricciliao.x.component.props.ApplicationProperties;
 @ConfigurationProperties("ricciliao.x.security")
 public class SecurityAutoProperties implements ApplicationProperties {
 
+    /**
+     * AES key file with binary.
+     */
     private Resource aesResource = new ClassPathResource("aes-key.bin");
     private Rsa rsa = new Rsa();
+    /**
+     * Enable the {@link ricciliao.x.starter.security.PropsSecurityProviderFactory}.
+     */
     private boolean active = false;
 
     public Resource getAesResource() {
@@ -37,8 +43,17 @@ public class SecurityAutoProperties implements ApplicationProperties {
     }
 
     public static class Rsa {
+        /**
+         * PKCS12 file which contains RSA key.
+         */
         private Resource resource = new ClassPathResource("keystore.p12");
+        /**
+         * PKCS12 file password.
+         */
         private String password = "ricciliao";
+        /**
+         * PKCS12 item alias name which is RSA key.
+         */
         private String alias = "X-RSA";
 
         public Resource getResource() {

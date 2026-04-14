@@ -1,6 +1,7 @@
 package ricciliao.x.starter.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Nonnull;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -12,7 +13,6 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import ricciliao.x.component.kafka.KafkaMessageDto;
 import ricciliao.x.component.kafka.KafkaProducer;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 

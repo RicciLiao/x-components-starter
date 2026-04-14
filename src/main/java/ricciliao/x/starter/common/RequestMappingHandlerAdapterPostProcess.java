@@ -1,5 +1,6 @@
 package ricciliao.x.starter.common;
 
+import jakarta.annotation.Nonnull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -9,7 +10,6 @@ import ricciliao.x.component.beans.TypedLifecycleBeanPostProcessor;
 import ricciliao.x.component.payload.response.ResponseHandler;
 import ricciliao.x.component.payload.response.ResponseHttpMessageConverter;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
