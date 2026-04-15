@@ -5,4 +5,5 @@ ricciliao.x.starter.aop.DynamicAspectAutoConfiguration
 ricciliao.x.starter.mcp.ConsumerCacheAutoConfiguration
 ricciliao.x.starter.kafka.KafkaConsumerAutoConfiguration
 ricciliao.x.starter.kafka.KafkaProducerAutoConfiguration
+ricciliao.x.starter.fsp.FspConsumerAutoConfiguration
 ricciliao.x.starter.XStarterAutoConfiguration
