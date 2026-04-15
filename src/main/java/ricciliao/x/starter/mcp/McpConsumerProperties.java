@@ -10,7 +10,7 @@ import ricciliao.x.mcp.McpConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsumerCacheProperties implements ApplicationProperties {
+public class McpConsumerProperties implements ApplicationProperties {
 
     /**
      * MCP service interface address.

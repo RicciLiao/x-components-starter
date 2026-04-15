@@ -2,7 +2,7 @@ ricciliao.x.starter.log.AuditLogAutoConfiguration
 ricciliao.x.starter.common.CommonAutoConfiguration
 ricciliao.x.starter.common.SpringdocAutoConfiguration
 ricciliao.x.starter.aop.DynamicAspectAutoConfiguration
-ricciliao.x.starter.mcp.ConsumerCacheAutoConfiguration
+ricciliao.x.starter.mcp.McpConsumerAutoConfiguration
 ricciliao.x.starter.kafka.KafkaConsumerAutoConfiguration
 ricciliao.x.starter.kafka.KafkaProducerAutoConfiguration
 ricciliao.x.starter.fsp.FspConsumerAutoConfiguration

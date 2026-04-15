@@ -14,22 +14,22 @@ import ricciliao.x.mcp.McpConstants;
 import ricciliao.x.mcp.McpIdentifier;
 import ricciliao.x.starter.common.CommonAutoProperties;
 
-public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<ConsumerCacheRestService<T>>, ApplicationContextAware {
+public class McpConsumerRestServiceFactoryBean<T extends ConsumerCacheData> implements FactoryBean<McpConsumerRestService<T>>, ApplicationContextAware {
 
-    private final ConsumerCacheProperties.OperationProperties props;
+    private final McpConsumerProperties.OperationProperties props;
     private final RestClient.Builder builder;
 
     private ApplicationContext applicationContext;
 
-    public ConsumerCacheRestServiceFactoryBean(@Nonnull ConsumerCacheProperties.OperationProperties props,
-                                               @Nonnull RestClient.Builder builder) {
+    public McpConsumerRestServiceFactoryBean(@Nonnull McpConsumerProperties.OperationProperties props,
+                                             @Nonnull RestClient.Builder builder) {
         this.props = props;
         this.builder = builder.clone();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public ConsumerCacheRestService<T> getObject() {
+    public McpConsumerRestService<T> getObject() {
         CommonAutoProperties commonProps = applicationContext.getBean(CommonAutoProperties.class);
         ResponseHttpMessageConverter responseHttpMessageConverter = applicationContext.getBean(ResponseHttpMessageConverter.class);
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = applicationContext.getBean(MappingJackson2HttpMessageConverter.class);
@@ -42,7 +42,7 @@ public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> im
                     httpMessageConverters.add(mappingJackson2HttpMessageConverter);
                 });
 
-        return new ConsumerCacheRestService<>(
+        return new McpConsumerRestService<>(
                 props,
                 new McpIdentifier(commonProps.getConsumer(), props.getStore()),
                 (Class<T>) props.getDataType(),
@@ -54,7 +54,7 @@ public class ConsumerCacheRestServiceFactoryBean<T extends ConsumerCacheData> im
     @Override
     public Class<?> getObjectType() {
 
-        return ConsumerCacheRestService.class;
+        return McpConsumerRestService.class;
     }
 
     @Override

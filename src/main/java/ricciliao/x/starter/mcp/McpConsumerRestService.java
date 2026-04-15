@@ -19,17 +19,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class ConsumerCacheRestService<T extends ConsumerCacheData> {
+public class McpConsumerRestService<T extends ConsumerCacheData> {
 
     protected final RestClient restClient;
-    protected final ConsumerCacheProperties.OperationProperties props;
+    protected final McpConsumerProperties.OperationProperties props;
     protected final McpIdentifier identifier;
     protected final Class<T> storeClassName;
 
-    public ConsumerCacheRestService(ConsumerCacheProperties.OperationProperties props,
-                                    McpIdentifier identifier,
-                                    Class<T> storeClassName,
-                                    final RestClient restClient) {
+    public McpConsumerRestService(McpConsumerProperties.OperationProperties props,
+                                  McpIdentifier identifier,
+                                  Class<T> storeClassName,
+                                  final RestClient restClient) {
         this.props = props;
         this.identifier = identifier;
         this.restClient = restClient;

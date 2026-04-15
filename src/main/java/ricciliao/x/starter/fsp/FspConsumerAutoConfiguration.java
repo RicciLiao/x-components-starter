@@ -1,10 +1,10 @@
 package ricciliao.x.starter.fsp;
 
 import ricciliao.x.starter.PropsAutoConfiguration;
-import ricciliao.x.starter.mcp.ConsumerCacheAutoProperties;
+import ricciliao.x.starter.mcp.McpConsumerAutoProperties;
 
 @PropsAutoConfiguration(
-        properties = ConsumerCacheAutoProperties.class,
+        properties = McpConsumerAutoProperties.class,
         conditionalOnProperties = "ricciliao.x.fsp.enabled",
         imports = {FspConsumerDefinitionRegistrar.class}
 )
