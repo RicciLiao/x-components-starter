@@ -45,7 +45,7 @@ public class CommonWebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(@Nonnull List<HttpMessageConverter<?>> converters) {
-        converters.removeIf(converter -> converter instanceof ResponseHttpMessageConverter);
+        converters.removeIf(ResponseHttpMessageConverter.class::isInstance);
     }
 
     @Override

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.Encoding;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.HeaderParameter;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestPart;
+import ricciliao.x.component.CoreConstants;
 import ricciliao.x.starter.PropsAutoConfiguration;
 
 import java.io.Serializable;
@@ -76,16 +78,12 @@ public class SpringdocAutoConfiguration {
 
     @Bean
     public OpenApiCustomizer globalHeaderOpenApiCustomizer() {
-        Parameter globalHeader1 =
+        Parameter consumerHeader =
                 new HeaderParameter()
-                        .name("Your-Header-Name-1")
-                        .description("Description of your header 1")
-                        .required(true);
-        Parameter globalHeader2 =
-                new HeaderParameter()
-                        .name("Your-Header-Name-2")
-                        .description("Description of your header 2")
-                        .required(true);
+                        .name(CoreConstants.CONSUMER_ID)
+                        .description("Service Consumer ID")
+                        .required(true)
+                        .schema(new StringSchema()._default(commonProps.getConsumer()));
 
         return
                 openApi ->
@@ -94,9 +92,7 @@ public class SpringdocAutoConfiguration {
                                 .forEach(pathItem ->
                                         {
                                             for (Operation operation : pathItem.readOperations()) {
-                                                operation
-                                                        .addParametersItem(globalHeader1)
-                                                        .addParametersItem(globalHeader2);
+                                                operation.addParametersItem(consumerHeader);
                                             }
                                         }
                                 );
