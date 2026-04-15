@@ -10,6 +10,7 @@ import ricciliao.x.component.payload.response.ResponseUtils;
 import ricciliao.x.component.rest.ResponseVoReferenceUtils;
 import ricciliao.x.mcp.ConsumerCache;
 import ricciliao.x.mcp.ConsumerCacheData;
+import ricciliao.x.mcp.McpCacheIdListDto;
 import ricciliao.x.mcp.McpIdentifier;
 import ricciliao.x.mcp.McpProviderInfo;
 import ricciliao.x.mcp.query.McpQuery;
@@ -102,12 +103,12 @@ public class McpConsumerRestService<T extends ConsumerCacheData> {
     }
 
     @Nullable
-    public SimplePayloadData.Bool delete(McpQuery query) throws RestClientException {
+    public SimplePayloadData.Bool delete(McpCacheIdListDto dto) throws RestClientException {
         ResponseEntity<Response<SimplePayloadData.Bool>> response =
                 restClient
                         .method(props.getBatchDelete().toHttpMethod())
                         .uri(props.getBatchDelete().getPath())
-                        .body(query)
+                        .body(dto)
                         .retrieve()
                         .toEntity(ResponseVoReferenceUtils.withGenerics(SimplePayloadData.Bool.class));
 

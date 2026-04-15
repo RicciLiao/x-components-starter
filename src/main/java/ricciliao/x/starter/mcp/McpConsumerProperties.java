@@ -74,9 +74,9 @@ public class McpConsumerProperties implements ApplicationProperties {
         private CacheRestPathProperties batchCreate = new CacheRestPathProperties("/batch", HttpMethod.POST);
         /**
          * Endpoint and http method for batch deleting cache.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/batch", HttpMethod.DELETE)}.
+         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/batch/delete", HttpMethod.POST)}.
          */
-        private CacheRestPathProperties batchDelete = new CacheRestPathProperties("/batch", HttpMethod.DELETE);
+        private CacheRestPathProperties batchDelete = new CacheRestPathProperties("/batch/delete", HttpMethod.POST);
         /**
          * Endpoint and http method for batch querying cache.
          * This Endpoint can return a batch of data.
