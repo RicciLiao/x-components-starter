@@ -20,7 +20,7 @@ public class KafkaProducerDefinitionRegistrar extends PropsImportBeanDefinitionR
             beanDefinition.setBeanClass(KafkaProducerFactoryBean.class);
             beanDefinition.getConstructorArgumentValues().addGenericArgumentValue(provider.getTopic());
             registry.registerBeanDefinition(
-                    provider.buildBeanNamePrefix() + KafkaProducer.class.getSimpleName(),
+                    provider.getTopic() + KafkaProducer.class.getSimpleName(),
                     beanDefinition
             );
         }

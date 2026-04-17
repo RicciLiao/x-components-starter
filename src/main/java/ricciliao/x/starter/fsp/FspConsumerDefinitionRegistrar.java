@@ -18,7 +18,8 @@ public class FspConsumerDefinitionRegistrar extends PropsImportBeanDefinitionReg
     @Override
     public void registerBeanDefinitions(@Nonnull AnnotationMetadata importingClassMetadata, @Nonnull BeanDefinitionRegistry registry) {
         RestClient.Builder builder = RestClient.builder().baseUrl(this.getProps().getUrl());
-        String beanName = FspConsumerRestService.class.getSimpleName();
+        String className = FspConsumerRestService.class.getSimpleName();
+        String beanName = className.substring(0, 1).toLowerCase() + className.substring(1);
         GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(FspConsumerRestServiceFactoryBean.class);
         beanDefinition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);

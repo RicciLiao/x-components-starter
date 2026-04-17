@@ -72,10 +72,6 @@ public class KafkaProducerAutoProperties implements ApplicationProperties {
             return Objects.hash(getTopic(), getMessageClass());
         }
 
-        public String buildBeanNamePrefix() {
-
-            return this.getTopic().substring(0, 1).toUpperCase() + this.getTopic().substring(1);
-        }
     }
 
 }
