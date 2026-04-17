@@ -114,7 +114,7 @@ ricciliao:
           data-type: com.example.Orange
 ```
 
-then you can inject the spring bean with name, like:
+then you can inject the spring bean by name, like:
 
 ```java
 private McpConsumerRestService<Apple> appleMcpConsumerRestService;
@@ -205,7 +205,7 @@ ricciliao:
       enabled: true
 ```
 
-then you can inject the spring bean with name, like:
+then you can inject the spring bean by type, like:
 
 ```java
 private FspConsumerRestService fspConsumerRestService;
