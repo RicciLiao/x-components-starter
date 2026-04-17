@@ -6,17 +6,22 @@
 
 Please refer to `dependencies-control-center` for the version number.
 
-| groupId                        | artifactId                | scope    |
-|--------------------------------|---------------------------|----------|
-| org.springframework.boot       | spring-boot-autoconfigure | compile  |
-| ricciliao.x                    | common-components         | compile  |
-| ricciliao.x                    | audit-log-component       | compile  |
-| org.springframework            | spring-context            | provided |
-| ricciliao.x                    | cache-consumer-common     | provided |
-| com.fasterxml.jackson.core     | jackson-databind          | provided |
-| com.fasterxml.jackson.datatype | jackson-datatype-jsr310   | provided |
-| org.springframework            | spring-web                | provided |
-| jakarta.servlet                | jakarta.servlet-api       | provided |
+| groupId                        | artifactId                       | scope    |
+|--------------------------------|----------------------------------|----------|
+| org.springframework.boot       | spring-boot-autoconfigure        | compile  |
+| org.springdoc                  | springdoc-openapi-starter-common | compile  |
+| ricciliao.x                    | common-components                | compile  |
+| ricciliao.x                    | audit-logging-component          | compile  |
+| ricciliao.x                    | fsp-component                    | compile  |
+| ricciliao.x                    | mcp-consumer-common              | provided |
+| org.springframework            | spring-context                   | provided |
+| com.fasterxml.jackson.core     | jackson-databind                 | provided |
+| com.fasterxml.jackson.datatype | jackson-datatype-jsr310          | provided |
+| org.springframework            | spring-web                       | provided |
+| org.springframework            | spring-webmvc                    | provided |
+| jakarta.servlet                | jakarta.servlet-api              | provided |
+| org.springframework.kafka      | spring-kafka                     | provided |
+| org.springframework.boot       | spring-boot-starter-actuator     | provided |
 
 ### 📌 Usage
 
