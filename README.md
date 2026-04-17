@@ -28,13 +28,15 @@ Please refer to `dependencies-control-center` for the version number.
 This **Starter** is base on spring starter design and integrates a series of x-components,
 you can config the components properties in your `application.yml`,
 then the starter will auto define components by your properties,
-it makes easier to use components to you.
+it makes easier to use components for you.
 
 #### Components
 
 1. `dynamic-aop-component`
 2. `mcp-component` *(for consumer)*
-3. `common-component`
+3. `audit-logging-component`
+4. `fsp-component` *(for consumer)*
+5. `common-component`
     - kafka
 
 ---
@@ -115,23 +117,107 @@ ricciliao:
 then you can inject the spring bean with name, like:
 
 ```java
-private ConsumerCacheRestService<Apple> appleConsumerCacheRestService;
-private ConsumerCacheRestService<Orange> orangeConsumerCacheRestService;
+private McpConsumerRestService<Apple> appleMcpConsumerRestService;
+private McpConsumerRestService<Orange> orangeMcpConsumerRestService;
 
-@Qualifier("appleConsumerCacheRestService")
+@Qualifier("appleMcpConsumerRestService")
 @Autowired
-public void setAppleConsumerCacheRestService(ConsumerCacheRestService<Apple> appleConsumerCacheRestService) {
-    this.appleConsumerCacheRestService = appleConsumerCacheRestService;
+public void setAppleMcpConsumerRestService(McpConsumerRestService<Apple> appleMcpConsumerRestService) {
+    this.appleMcpConsumerRestService = appleMcpConsumerRestService;
 }
 
-@Qualifier("orangeConsumerCacheRestService")
+@Qualifier("orangeMcpConsumerRestService")
 @Autowired
-public void setOrangeConsumerCacheRestService(ConsumerCacheRestService<Orange> orangeConsumerCacheRestService) {
-    this.orangeConsumerCacheRestService = orangeConsumerCacheRestService;
+public void setOrangeMcpConsumerRestService(McpConsumerRestService<Orange> orangeMcpConsumerRestService) {
+    this.orangeMcpConsumerRestService = orangeMcpConsumerRestService;
 }
 ```
 
-**Spring bean name is composed of `ricciliao.x.mcp.operation-list[].store` and ConsumerCacheRestService.**
+**Spring bean name is composed of `ricciliao.x.mcp.operation-list[].store` and `McpConsumerRestService.class.getSimpleName()`.**
+
+---
+
+#### 🚩 audit-logging-component
+
+*please refer to `x-audit-logging-component`*
+
+#### 📝 Configuration
+
+```yaml
+ricciliao:
+  x:
+    log:
+      enable: #Defaults to false
+      corePoolSize: #Defaults to 1
+      maxPoolSize: #Defaults to Integer.MAX_VALUE
+      keepAliveSeconds: #Defaults to 60
+      queueCapacity: #Defaults to Integer.MAX_VALUE
+      threadNamePrefix: #Defaults to "MDC Executor - "
+```
+
+---
+
+#### 🚩 fsp-component
+
+***Just for the consumer which use **File Storage Provider** as file store.***
+
+#### 📝 Configuration
+
+```yaml
+ricciliao:
+  x:
+    fsp:
+      enable: #Default false
+      url:  #FSP service interface address.Defaults to {@value FspConstants#DEFAULT_PROVIDER_FILE_PATH}
+      operation:
+        create: #Endpoint and http method for creating file.Defaults to {@code new FspRestPathProperties("", HttpMethod.POST)}.
+          path:
+          method:
+        update: #Endpoint and http method for updating file.Defaults to {@code new FspRestPathProperties("", HttpMethod.PUT)}.
+          path:
+          method:
+        delete: #Endpoint and http method for deleting file.Defaults to {@code new FspRestPathProperties("", HttpMethod.DELETE)}.
+          path:
+          method:
+        get: #Endpoint and http method for querying file.This Endpoint only return a single file.Defaults to {@code new FspRestPathProperties("", HttpMethod.GET)}.
+          path:
+          method:
+        batchCreate: #Endpoint and http method for batch creating file.Defaults to {@code new FspRestPathProperties("/batch", HttpMethod.POST)}.
+          path:
+          method:
+        batchUpdate: #Endpoint and http method for batch updating file.Defaults to {@code new FspRestPathProperties("/batch", HttpMethod.PUT)}.
+          path:
+          method:
+        batchDelete: #Endpoint and http method for batch deleting file.Defaults to {@code new CacheRestPathProperties("/batch/delete", HttpMethod.POST)}.
+          path:
+          method:
+        list: #Endpoint and http method for batch querying file.This Endpoint can return a batch file.Defaults to {@code new CacheRestPathProperties("/list", HttpMethod.POST)}.
+          path:
+          method:
+```
+
+The **Starter** will auto register spring bean by your configuration, for example:
+
+```yaml
+ricciliao:
+  x:
+    fsp:
+      enabled: true
+```
+
+then you can inject the spring bean with name, like:
+
+```java
+private FspConsumerRestService fspConsumerRestService;
+
+@Autowired
+public void setFspConsumerRestService(FspConsumerRestService fspConsumerRestService) {
+    this.fspConsumerRestService = fspConsumerRestService;
+}
+```
+
+**Spring bean name is `FspConsumerRestService.class.getSimpleName()`, and autowire mode is `AbstractBeanDefinition.AUTOWIRE_BY_TYPE`.**
+
 
 ---
 
@@ -171,39 +257,11 @@ ricciliao:
   x:
     kafka:
       consumer:
-        consumer-list:
-          - topic:
-            group:
-            handler:
-            bean-name:
+        consumer-list:  #Kafka consumer list.
+          - topic:  #Kafka consumer topic.
+            group:  #Kafka consumer group.
+            handler:  #Kafka consumer message handler class, it should be implemented with {@link ricciliao.x.component.kafka.KafkaConsumerHandler}.
 ```
-
-```java
-public class KafkaConsumerAutoProperties extends ApplicationProperties {
-
-    private List<Consumer> consumerList;
-
-    public static class Consumer {
-        private String topic;
-        private String group;
-        private Class<KafkaHandler<KafkaMessageDto>> handler;
-        private String beanName;
-    }
-}
-```
-
-##### KafkaConsumerAutoProperties.class
-
-* `consumerList`: your kafka consumer list.
-
-##### Consumer.class
-
-* `topic`: your kafka consumer topic.
-* `group`: your kafka consumer group.
-* `handler`: your kafka consumer message handler class, it should be implemented with `KafkaHandler.class`.
-* `beanName`: your kafka consumer message handler bean name.
-
----
 
 - #### Producer
 
@@ -214,70 +272,9 @@ ricciliao:
   x:
     kafka:
       provider:
-        provider-list:
-          - topic:
-            message-class:
-            bean-name: 
-```
-
-```java
-public class KafkaProducerAutoProperties extends ApplicationProperties {
-
-    private List<Producer> producerList;
-
-    public static class Producer {
-        private String topic;
-        private Class<KafkaMessageDto> messageClass;
-        private String beanName;
-    }
-}
-```
-
-#### KafkaProducerAutoProperties.class
-
-* `producerList`: your kafka producer list.
-
-#### Producer.class
-
-* `topic`: your kafka producer topic.
-* `beanName`: your kafka producer bean name.
-* `messageClass`: your kafka producer message POJO class, it should be implemented with `KafkaMessageDto.class`.
-
----
-
-#### 🚩 audit-log-component
-
-*please refer to `x-audit-log-component`*
-
-📝 Configuration
-
-```yaml
-ricciliao:
-  x:
-    log:
-      executor:
-        enable:
-        corePoolSize:
-        maxPoolSize:
-        keepAliveSeconds:
-        queueCapacity:
-        threadNamePrefix:
-
-```
-
-```java
-public class AuditLogAutoProperties extends ApplicationProperties {
-    private Executor executor;
-
-    public static class Executor {
-        private Boolean enable = Boolean.FALSE;
-        private Integer corePoolSize = 1;
-        private Integer maxPoolSize = Integer.MAX_VALUE;
-        private Integer keepAliveSeconds = 60;
-        private Integer queueCapacity = Integer.MAX_VALUE;
-        private String threadNamePrefix = "MDC Executor - ";
-    }
-}
+        provider-list:  #Kafka producer list.
+          - topic:  #Kafka producer topic.
+            message-class:  #Kafka producer message POJO class, it should be implemented with {@link ricciliao.x.component.kafka.KafkaMessageDto}.
 ```
 
 ---

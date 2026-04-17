@@ -10,6 +10,9 @@ import java.util.Objects;
 @ConfigurationProperties("ricciliao.x.kafka.producer")
 public class KafkaProducerAutoProperties implements ApplicationProperties {
 
+    /**
+     * Kafka producer list.
+     */
     private List<Producer> producerList;
 
     public List<Producer> getProducerList() {
@@ -33,17 +36,14 @@ public class KafkaProducerAutoProperties implements ApplicationProperties {
     }
 
     public static class Producer {
+        /**
+         * Kafka producer topic.
+         */
         private String topic;
+        /**
+         * Kafka producer message POJO class, it should be implemented with {@link ricciliao.x.component.kafka.KafkaMessageDto}.
+         */
         private Class<? extends KafkaMessageDto> messageClass;
-        private String beanName;
-
-        public String getBeanName() {
-            return beanName;
-        }
-
-        public void setBeanName(String beanName) {
-            this.beanName = beanName;
-        }
 
         public String getTopic() {
             return topic;
@@ -63,14 +63,18 @@ public class KafkaProducerAutoProperties implements ApplicationProperties {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Producer provider)) return false;
-            return Objects.equals(getTopic(), provider.getTopic()) && Objects.equals(getMessageClass(), provider.getMessageClass()) && Objects.equals(getBeanName(), provider.getBeanName());
+            if (!(o instanceof Producer producer)) return false;
+            return Objects.equals(getTopic(), producer.getTopic()) && Objects.equals(getMessageClass(), producer.getMessageClass());
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getTopic(), getMessageClass(), getBeanName());
+            return Objects.hash(getTopic(), getMessageClass());
+        }
+
+        public String buildBeanNamePrefix() {
+
+            return this.getTopic().substring(0, 1).toUpperCase() + this.getTopic().substring(1);
         }
     }
 

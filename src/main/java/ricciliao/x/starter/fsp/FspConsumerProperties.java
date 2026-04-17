@@ -3,11 +3,16 @@ package ricciliao.x.starter.fsp;
 import org.springframework.http.HttpMethod;
 import ricciliao.x.component.props.ApplicationProperties;
 import ricciliao.x.component.rest.RestPathProperties;
+import ricciliao.x.fsp.FspConstants;
 
 public class FspConsumerProperties implements ApplicationProperties {
 
     private boolean enabled = false;
-    private String url = "http://ricci-fsp-svc:8087/file";
+    /**
+     * FSP service interface address.
+     * Defaults to {@value FspConstants#DEFAULT_PROVIDER_FILE_PATH}
+     */
+    private String url = FspConstants.DEFAULT_PROVIDER_FILE_PATH;
     private OperationProperties operation = new OperationProperties();
 
     public boolean isEnabled() {
@@ -35,13 +40,47 @@ public class FspConsumerProperties implements ApplicationProperties {
     }
 
     public static class OperationProperties {
+        /**
+         * Endpoint and http method for creating file.
+         * Defaults to {@code new FspRestPathProperties("", HttpMethod.POST)}.
+         */
         private FspRestPathProperties create = new FspRestPathProperties("", HttpMethod.POST);
+        /**
+         * Endpoint and http method for updating file.
+         * Defaults to {@code new FspRestPathProperties("", HttpMethod.PUT)}.
+         */
         private FspRestPathProperties update = new FspRestPathProperties("", HttpMethod.PUT);
+        /**
+         * Endpoint and http method for deleting file.
+         * Defaults to {@code new FspRestPathProperties("", HttpMethod.DELETE)}.
+         */
         private FspRestPathProperties delete = new FspRestPathProperties("", HttpMethod.DELETE);
+        /**
+         * Endpoint and http method for querying file.
+         * This Endpoint only return a single file.
+         * Defaults to {@code new FspRestPathProperties("", HttpMethod.GET)}.
+         */
         private FspRestPathProperties get = new FspRestPathProperties("", HttpMethod.GET);
+        /**
+         * Endpoint and http method for batch creating file.
+         * Defaults to {@code new FspRestPathProperties("/batch", HttpMethod.POST)}.
+         */
         private FspRestPathProperties batchCreate = new FspRestPathProperties("/batch", HttpMethod.POST);
+        /**
+         * Endpoint and http method for batch updating file.
+         * Defaults to {@code new FspRestPathProperties("/batch", HttpMethod.PUT)}.
+         */
         private FspRestPathProperties batchUpdate = new FspRestPathProperties("/batch", HttpMethod.PUT);
+        /**
+         * Endpoint and http method for batch deleting file.
+         * Defaults to {@code new CacheRestPathProperties("/batch/delete", HttpMethod.POST)}.
+         */
         private FspRestPathProperties batchDelete = new FspRestPathProperties("/batch/delete", HttpMethod.POST);
+        /**
+         * Endpoint and http method for batch querying file.
+         * This Endpoint can return a batch file.
+         * Defaults to {@code new CacheRestPathProperties("/list", HttpMethod.POST)}.
+         */
         private FspRestPathProperties list = new FspRestPathProperties("/list", HttpMethod.POST);
 
         public FspRestPathProperties getCreate() {

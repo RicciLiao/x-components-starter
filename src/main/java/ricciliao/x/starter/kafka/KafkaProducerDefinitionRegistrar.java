@@ -5,6 +5,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.core.type.AnnotationMetadata;
 import ricciliao.x.component.beans.PropsImportBeanDefinitionRegistrar;
+import ricciliao.x.component.kafka.KafkaProducer;
 
 public class KafkaProducerDefinitionRegistrar extends PropsImportBeanDefinitionRegistrar<KafkaProducerAutoProperties> {
 
@@ -18,7 +19,10 @@ public class KafkaProducerDefinitionRegistrar extends PropsImportBeanDefinitionR
             GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
             beanDefinition.setBeanClass(KafkaProducerFactoryBean.class);
             beanDefinition.getConstructorArgumentValues().addGenericArgumentValue(provider.getTopic());
-            registry.registerBeanDefinition(provider.getBeanName(), beanDefinition);
+            registry.registerBeanDefinition(
+                    provider.buildBeanNamePrefix() + KafkaProducer.class.getSimpleName(),
+                    beanDefinition
+            );
         }
     }
 

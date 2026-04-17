@@ -11,6 +11,9 @@ import java.util.Objects;
 @ConfigurationProperties("ricciliao.x.kafka.consumer")
 public class KafkaConsumerAutoProperties implements ApplicationProperties {
 
+    /**
+    * Kafka consumer list.
+    */
     private List<Consumer> consumerList;
 
     public List<Consumer> getConsumerList() {
@@ -34,8 +37,17 @@ public class KafkaConsumerAutoProperties implements ApplicationProperties {
     }
 
     public static class Consumer {
+        /**
+        * Kafka consumer topic.
+        */
         private String topic;
+        /**
+         * Kafka consumer group.
+         */
         private String group;
+        /**
+        * Kafka consumer message handler class, it should be implemented with {@link ricciliao.x.component.kafka.KafkaConsumerHandler}.
+        */
         private Class<? extends KafkaConsumerHandler<? extends KafkaMessageDto>> handler;
 
         public String getTopic() {
@@ -60,6 +72,17 @@ public class KafkaConsumerAutoProperties implements ApplicationProperties {
 
         public void setHandler(Class<? extends KafkaConsumerHandler<? extends KafkaMessageDto>> handler) {
             this.handler = handler;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Consumer consumer)) return false;
+            return Objects.equals(getTopic(), consumer.getTopic()) && Objects.equals(getGroup(), consumer.getGroup()) && Objects.equals(getHandler(), consumer.getHandler());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getTopic(), getGroup(), getHandler());
         }
 
         public String buildBeanNamePrefix() {

@@ -48,44 +48,44 @@ public class McpConsumerProperties implements ApplicationProperties {
         private Class<? extends ConsumerCacheData> dataType;
         /**
          * Endpoint and http method for creating cache.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.POST)}.
+         * Defaults to {@code new CacheRestPathProperties("", HttpMethod.POST)}.
          */
         private CacheRestPathProperties create = new CacheRestPathProperties("", HttpMethod.POST);
         /**
          * Endpoint and http method for updating cache.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.PUT)}.
+         * Defaults to {@code new CacheRestPathProperties("", HttpMethod.PUT)}.
          */
         private CacheRestPathProperties update = new CacheRestPathProperties("", HttpMethod.PUT);
         /**
          * Endpoint and http method for deleting cache.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.DELETE)}.
+         * Defaults to {@code new CacheRestPathProperties("", HttpMethod.DELETE)}.
          */
         private CacheRestPathProperties delete = new CacheRestPathProperties("/{id}", HttpMethod.DELETE);
         /**
          * Endpoint and http method for querying cache.
-         * This Endpoint only return a single of data.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("", HttpMethod.GET)}.
+         * This Endpoint only return a single data.
+         * Defaults to {@code new CacheRestPathProperties("", HttpMethod.GET)}.
          */
         private CacheRestPathProperties get = new CacheRestPathProperties("/{id}", HttpMethod.GET);
         /**
          * Endpoint and http method for batch creating cache.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/batch", HttpMethod.POST)}.
+         * Defaults to {@code new CacheRestPathProperties("/batch", HttpMethod.POST)}.
          */
         private CacheRestPathProperties batchCreate = new CacheRestPathProperties("/batch", HttpMethod.POST);
         /**
          * Endpoint and http method for batch deleting cache.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/batch/delete", HttpMethod.POST)}.
+         * Defaults to {@code new CacheRestPathProperties("/batch/delete", HttpMethod.POST)}.
          */
         private CacheRestPathProperties batchDelete = new CacheRestPathProperties("/batch/delete", HttpMethod.POST);
         /**
          * Endpoint and http method for batch querying cache.
-         * This Endpoint can return a batch of data.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/list", HttpMethod.POST)}.
+         * This Endpoint can return a batch data.
+         * Defaults to {@code new CacheRestPathProperties("/list", HttpMethod.POST)}.
          */
         private CacheRestPathProperties list = new CacheRestPathProperties("/list", HttpMethod.POST);
         /**
          * Endpoint and http method for batch querying MCP information.
-         * Defaults to {@code new ricciliao.x.mcp.ConsumerCacheData("/extra/info", HttpMethod.GET)}.
+         * Defaults to {@code new CacheRestPathProperties("/extra/info", HttpMethod.GET)}.
          */
         private CacheRestPathProperties info = new CacheRestPathProperties("/extra/info", HttpMethod.GET);
 
